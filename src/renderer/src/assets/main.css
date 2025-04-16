@@ -1,0 +1,47 @@
+:root {
+  color-scheme: dark;
+  --primary-bg-color: #222;
+  --primary-font-color: #999;
+
+  --active-color: #8A5CF5;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --primary-bg-color: #fff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.noselect {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+html {
+  height: 100vh;
+  width: 100%;
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: var(--primary-bg-color);
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}

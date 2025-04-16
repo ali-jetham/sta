@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    padding-left: 1.2rem;
+    background: var(--primary-bg-color);
+    /* background-color: black; */
+    min-width: 12rem;
+    max-width: 50rem;
+}
+
+.sidebar {
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: var(--primary-font-color);
+}
+
+.divider {
+    min-width: .1rem;
+    background-color: var(--primary-font-color);
+}
+
+.divider.resizing {
+    cursor: ew-resize;
+    user-select: none;
+}
+
+.divider:hover {
+    cursor: ew-resize;
+    background-color: var(--active-color);
+    transform: scaleX(2);
+}

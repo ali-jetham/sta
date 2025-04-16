@@ -1,0 +1,35 @@
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* main axis */
+    justify-content: space-between;
+    /* cross axis */
+    align-items: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    max-width: 2.4rem;
+    min-width: 2.4rem;
+    /* border-right: 1px solid white; */
+}
+
+/* .ribbon {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+} */
+
+.bottom {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+}
+
+.settings,
+.folderRoot,
+.sidebarButton {
+    all: unset;
+    cursor: pointer;
+}
