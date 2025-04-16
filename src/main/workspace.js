@@ -1,19 +1,18 @@
 import path from 'node:path'
 import fs from 'node:fs'
 import os from 'node:os'
+import { webContents } from 'electron'
 
-export function initWorkspace() {
+export function initWorkspace(window) {
   if (!configExists()) {
     createConfig()
-    setWorkspacePath() // send a message to renderer to didplay a modal
+    askWorkSpacePath(window)
   } else {
     // const configFile = getConfigPath()
     // getWorkSpacePath(configFile)
     // // TODO: send IPC message with workspace path
   }
 }
-
-initWorkspace()
 
 function getConfigPath() {
   let basePath
@@ -33,6 +32,13 @@ function getConfigPath() {
   const fullPath = path.join(basePath, 'sta', 'config.json')
   basePath = path.join(basePath, 'sta')
   return { basePath, fullPath }
+}
+
+function askWorkSpacePath(window) {
+  console.log('askWorkSpacePath called')
+  if (window.webContents) {
+    window.webContents.send('askWorkSpace')
+  }
 }
 
 function configExists() {

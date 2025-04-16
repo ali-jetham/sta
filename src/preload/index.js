@@ -1,8 +1,18 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
+console.log('preload executed')
+
 // Custom APIs for renderer
-const api = {}
+const api = {
+  askWorkSpaceDialog: function (callback) {
+    console.log('askWorkSpaceDialog listener added')
+    ipcRenderer.on('askWorkSpace', () => callback())
+  },
+
+  onUpdateCounter: (callback) =>
+    ipcRenderer.on('update-counter', (_event, value) => callback(value))
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

@@ -1,21 +1,46 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './App.module.css'
 import MainView from './components/MainView/MainView.jsx'
 import Ribbon from './components/Ribbon/Ribbon.jsx'
 import SideBar from './components/SideBar/SideBar.jsx'
+import WorkSpaceDialog from './components/WorkSpaceDialog/WorkSpaceDialog.jsx'
+import Overlay from './components/Overlay/Overlay.jsx'
 
 function App() {
   const [showSideBar, setShowSideBar] = useState(false)
+  const [showWorkSpaceDialog, setShowWorkSpaceDialog] = useState(false)
+  const [showOverlay, setShowOverlay] = useState(false)
+
   function sideBarToggle() {
     setShowSideBar((prev) => !prev)
   }
 
-  return (
-    <div className={styles.appContainer}>
-      <Ribbon sideBarToggle={sideBarToggle} />
+  useEffect(() => {
+    if (window.api && window.api.askWorkSpaceDialog) {
+      console.log('Setting up askWorkSpaceDialog listener')
+      window.api.askWorkSpaceDialog(() => {
+        console.log('askWorkSpaceDialog callback executed')
+        setShowWorkSpaceDialog(true)
+      })
+    } else {
+      console.error('window.api or askWorkSpaceDialog is not available')
+    }
+  }, [])
 
+  return (
+
+    <div className={`${styles.appContainer}`}>
+
+      {showOverlay && <Overlay />}
+
+      <Ribbon sideBarToggle={sideBarToggle} />
       {showSideBar && <SideBar isVisible={showSideBar} />}
       <MainView />
+      {showWorkSpaceDialog && createPortal(
+        <WorkSpaceDialog />, document.body
+      )}
+
     </div>
   )
 }
