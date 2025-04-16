@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { initWorkspace } from './workspace'
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -25,8 +26,6 @@ function createWindow() {
     return { action: 'deny' }
   })
 
-  // HMR for renderer base on electron-vite cli.
-  // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
@@ -56,4 +55,4 @@ app.on('window-all-closed', () => {
   }
 })
 
-ipcMain.on('ping', () => console.log('pong'))
+initWorkspace()

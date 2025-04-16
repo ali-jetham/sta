@@ -1,9 +1,21 @@
-const path = require('node:path')
-const fs = require('node:fs')
-const { log } = require('node:console')
-const os = require("node:os");
+import path from 'node:path'
+import fs from 'node:fs'
+import os from 'node:os'
 
-function getConfigLocation() {
+export function initWorkspace() {
+  if (!configExists()) {
+    createConfig()
+    setWorkspacePath() // send a message to renderer to didplay a modal
+  } else {
+    // const configFile = getConfigPath()
+    // getWorkSpacePath(configFile)
+    // // TODO: send IPC message with workspace path
+  }
+}
+
+initWorkspace()
+
+function getConfigPath() {
   let basePath
   switch (process.platform) {
     case 'win32':
@@ -19,11 +31,43 @@ function getConfigLocation() {
       basePath = os.homedir()
   }
   const fullPath = path.join(basePath, 'sta', 'config.json')
-  fs.mkdirSync(path.dirname(fullPath), { recursive: true })
-  log(fullPath)
+  basePath = path.join(basePath, 'sta')
+  return { basePath, fullPath }
 }
 
-// function setWorkspace(workspace)
-// {
-// }
+function configExists() {
+  const { fullPath } = getConfigPath()
+  if (fs.existsSync(fullPath)) {
+    console.log(`${fullPath} exists`)
+    return true
+  } else {
+    console.log(`${fullPath} doesnt exist`)
+    return false
+  }
+}
 
+function getWorkSpacePath() {
+  const configFile = getConfigPath()
+  fs.readFile(configFile, 'utf-8', (err, data) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+    console.log(data)
+  })
+}
+
+function createConfig() {
+  const { basePath, fullPath } = getConfigPath()
+  const configJson = '{"workSpaces": [{}]}'
+  fs.mkdirSync(path.dirname(basePath), { recursive: true })
+  fs.writeFile(fullPath, configJson, { flag: 'w+' }, (err) => {
+    if (err) {
+      console.error(err)
+    } else {
+      console.log('Config file made successfully')
+    }
+  })
+}
+
+function setWorkspacePath(workspace) {}
