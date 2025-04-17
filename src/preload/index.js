@@ -1,12 +1,13 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import log from 'electron-log/renderer'
 
-console.log('preload executed')
+log.info('preload executed')
 
 // Custom APIs for renderer
 const api = {
   askWorkSpaceDialog: function (callback) {
-    console.log('askWorkSpaceDialog listener added')
+    log.debug('askWorkSpaceDialog listener added')
     ipcRenderer.on('askWorkSpace', () => callback())
   },
 

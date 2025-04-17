@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
+import log from 'electron-log/renderer'
 import styles from './App.module.css'
 import MainView from './components/MainView/MainView.jsx'
 import Ribbon from './components/Ribbon/Ribbon.jsx'
@@ -18,9 +19,9 @@ function App() {
 
   useEffect(() => {
     if (window.api && window.api.askWorkSpaceDialog) {
-      console.log('Setting up askWorkSpaceDialog listener')
+      log.info('Setting up askWorkSpaceDialog listener')
       window.api.askWorkSpaceDialog(() => {
-        console.log('askWorkSpaceDialog callback executed')
+        log.info('askWorkSpaceDialog callback executed')
         setShowWorkSpaceDialog(true)
       })
     } else {

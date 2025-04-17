@@ -1,9 +1,13 @@
 import path from 'node:path'
 import fs from 'node:fs'
 import os from 'node:os'
-import { webContents } from 'electron'
+import createLogger from './logger'
+
+const log = createLogger('workspace')
 
 export function initWorkspace(window) {
+  log.info('[initWorkspace] initWorkSpace called')
+
   if (!configExists()) {
     createConfig()
     askWorkSpacePath(window)
@@ -35,19 +39,21 @@ function getConfigPath() {
 }
 
 function askWorkSpacePath(window) {
-  console.log('askWorkSpacePath called')
+  log.debug('[askWorkSpacePath] askWorkSpacePath called')
   if (window.webContents) {
     window.webContents.send('askWorkSpace')
   }
 }
 
 function configExists() {
+  log.debug('[configExists] configExists called')
+
   const { fullPath } = getConfigPath()
   if (fs.existsSync(fullPath)) {
-    console.log(`${fullPath} exists`)
+    log.debug(`[configExists] ${fullPath} exists`)
     return true
   } else {
-    console.log(`${fullPath} doesnt exist`)
+    log.warn(`[configExists] ${fullPath} doesnt exist`)
     return false
   }
 }
@@ -56,10 +62,10 @@ function getWorkSpacePath() {
   const configFile = getConfigPath()
   fs.readFile(configFile, 'utf-8', (err, data) => {
     if (err) {
-      console.error(err)
+      log.error(`[getWorkSpacePath]`, err)
       return
     }
-    console.log(data)
+    log.debug('[getWorkSpacePath]', data)
   })
 }
 
@@ -67,11 +73,12 @@ function createConfig() {
   const { basePath, fullPath } = getConfigPath()
   const configJson = '{"workSpaces": [{}]}'
   fs.mkdirSync(path.dirname(basePath), { recursive: true })
+
   fs.writeFile(fullPath, configJson, { flag: 'w+' }, (err) => {
     if (err) {
-      console.error(err)
+      log.error(err)
     } else {
-      console.log('Config file made successfully')
+      log.debug('Config file made successfully')
     }
   })
 }

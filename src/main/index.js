@@ -3,6 +3,10 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { initWorkspace } from './workspace'
+import createLogger from './logger'
+
+const log = createLogger('index')
+log.info('Started app')
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -38,6 +42,8 @@ function createWindow() {
     initWorkspace(mainWindow)
   })
 }
+
+app.disableHardwareAcceleration()
 
 app.whenReady().then(() => {
   // Set app user model id for windows
