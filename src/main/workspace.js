@@ -2,6 +2,7 @@ import path from 'node:path'
 import fs from 'node:fs'
 import os from 'node:os'
 import createLogger from './logger'
+import { app, dialog, ipcMain } from 'electron'
 
 const log = createLogger('workspace')
 
@@ -16,6 +17,8 @@ export function initWorkspace(window) {
     // getWorkSpacePath(configFile)
     // // TODO: send IPC message with workspace path
   }
+
+  ipcMain.handle('openWorkSpace', openWorkSpace)
 }
 
 function getConfigPath() {
@@ -84,3 +87,19 @@ function createConfig() {
 }
 
 function setWorkspacePath(workspace) {}
+
+function openWorkSpace() {
+  log.debug('[openWorkSpace] openWorkSpace called')
+  // const defaultpath = app.getPath('documents')
+  // log.debug(defaultpath)
+  try {
+    const res = dialog.showOpenDialogSync({
+      title: 'Open WorkSpace',
+      defaultPath: app.getPath('documents'),
+      properties: ['openDirectory']
+    })
+    log.debug(res)
+  } catch (error) {
+    log.error('[openWorkSpace]', error)
+  }
+}
