@@ -1,12 +1,11 @@
 import path from 'node:path'
-import fs from 'node:fs'
+import fs, { readdir } from 'node:fs'
 import os from 'node:os'
 import createLogger from './logger'
 import { app, dialog, ipcMain } from 'electron'
-import { debuglog } from 'node:util'
 
 const log = createLogger('workspace')
-let workspacePath = null
+let workspacePath = getWorkSpacePath()
 
 export function initWorkspace(window) {
   log.info('[initWorkspace] initWorkSpace called')
@@ -14,9 +13,9 @@ export function initWorkspace(window) {
   if (!configExists()) {
     createConfig()
     askWorkSpacePath(window)
-  } else {
-    getWorkSpacePath()
   }
+
+  buildFileTree()
 
   ipcMain.handle('openWorkSpace', openWorkSpace)
 }
@@ -62,28 +61,28 @@ function configExists() {
 }
 
 function getWorkSpacePath() {
-  log.debug('[getWorkSpacePath] getWorkSpacePath() called')
   const { fullPath } = getConfigPath()
 
-  fs.readFile(fullPath, 'utf-8', (err, data) => {
-    if (err) {
-      log.error(`[getWorkSpacePath]`, err)
-      return
-    }
-
-    log.verbose(`[getWorkSpacePath] data: ${data}`)
+  try {
+    const data = fs.readFileSync(fullPath, 'utf-8')
     const config = JSON.parse(data)
     const activePath = config.workSpaces.find((ws) => ws.active)?.path
-    log.debug(`[getWorkSpacePath] activePath: ${activePath}`)
     if (activePath) {
-      workspacePath = activePath
+      log.debug(`[getWorkSpacePath] activePath: ${activePath}`)
+      return activePath
+    } else {
+      log.error(`[getWorkSpacePath] no active workspace found`)
     }
-  })
+  } catch (err) {
+    log.error('[getWorkSpacePath]', err)
+  }
+
+  return undefined
 }
 
 function createConfig() {
   const { basePath, fullPath } = getConfigPath()
-  const configJson = '{"workSpaces": [{}]}'
+  const configJson = '{"workSpaces": []}'
   fs.mkdirSync(path.dirname(basePath), { recursive: true })
 
   fs.writeFile(fullPath, configJson, { flag: 'w+' }, (err) => {
@@ -108,4 +107,23 @@ function openWorkSpace() {
   } catch (error) {
     log.error('[openWorkSpace]', error)
   }
+}
+
+function buildFileTree() {
+  log.info(`[buildFileTree] buildFileTree() called`)
+
+  readdir(workspacePath, { recursive: true, withFileTypes: true }, (error, files) => {
+    if (error) {
+      log.error(`[buildFileTree] error: ${error}`)
+      return
+    }
+    const fileTree = files.map((file) => {
+      return {
+        name: file.name,
+        path: path.join(workspacePath, file.name),
+        type: file.isDirectory() ? 'directory' : 'file'
+      }
+    })
+    log.verbose(`[buildFileTree] files: ${JSON.stringify(fileTree, null, 2)}`)
+  })
 }

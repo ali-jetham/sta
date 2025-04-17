@@ -11,7 +11,7 @@ import log from 'electron-log/renderer.js'
 
 function App() {
   const [showSideBar, setShowSideBar] = useState(false)
-  const [showWorkSpaceDialog, setShowWorkSpaceDialog] = useState(true)
+  const [showWorkSpaceDialog, setShowWorkSpaceDialog] = useState(false)
   const [showOverlay, setShowOverlay] = useState(false)
 
   function sideBarToggle() {
