@@ -19,6 +19,7 @@ export function initWorkspace(window) {
   }
 
   ipcMain.handle('openWorkSpace', openWorkSpace)
+  ipcMain.handle('createWorkSpace', createWorkSpace)
 }
 
 function getConfigPath() {
@@ -86,14 +87,26 @@ function createConfig() {
   })
 }
 
-function setWorkspacePath(workspace) {}
+function setWorkspacePath(workspace) { }
 
 function openWorkSpace() {
   log.debug('[openWorkSpace] openWorkSpace called')
-  // const defaultpath = app.getPath('documents')
-  // log.debug(defaultpath)
   try {
     const res = dialog.showOpenDialogSync({
+      title: 'Open WorkSpace',
+      defaultPath: app.getPath('documents'),
+      properties: ['openDirectory']
+    })
+    log.debug(res)
+  } catch (error) {
+    log.error('[openWorkSpace]', error)
+  }
+}
+
+function createWorkSpace() {
+  log.debug('[createWorkSpace] createWorkSpace called')
+  try {
+    const res = dialog.showSaveDialog({
       title: 'Open WorkSpace',
       defaultPath: app.getPath('documents'),
       properties: ['openDirectory']

@@ -2,8 +2,12 @@ import styles from './WorkSpaceDialog.module.css'
 
 export default function WorkSpaceDialog() {
 
-    function openWorkspace() {
+    function openWorkSpace() {
         window.electron.ipcRenderer.invoke('openWorkSpace')
+    }
+
+    function createWorkSpace() {
+        window.electron.ipcRenderer.invoke('createWorkSpace')
     }
 
     return (
@@ -17,12 +21,12 @@ export default function WorkSpaceDialog() {
 
                 <div>
                     <span>Open an existing workspace</span>
-                    <button className={styles.button} onClick={openWorkspace}>Open</button>
+                    <button className={styles.button} onClick={openWorkSpace}>Open</button>
                 </div>
 
                 <div>
                     <span>Create a existing workspace</span>
-                    <button>Create</button>
+                    <button onClick={createWorkSpace}>Create</button>
                 </div>
             </div>
         </div>
