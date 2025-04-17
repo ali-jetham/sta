@@ -3,8 +3,10 @@ import fs from 'node:fs'
 import os from 'node:os'
 import createLogger from './logger'
 import { app, dialog, ipcMain } from 'electron'
+import { debuglog } from 'node:util'
 
 const log = createLogger('workspace')
+let workspacePath = null
 
 export function initWorkspace(window) {
   log.info('[initWorkspace] initWorkSpace called')
@@ -13,13 +15,10 @@ export function initWorkspace(window) {
     createConfig()
     askWorkSpacePath(window)
   } else {
-    // const configFile = getConfigPath()
-    // getWorkSpacePath(configFile)
-    // // TODO: send IPC message with workspace path
+    getWorkSpacePath()
   }
 
   ipcMain.handle('openWorkSpace', openWorkSpace)
-  ipcMain.handle('createWorkSpace', createWorkSpace)
 }
 
 function getConfigPath() {
@@ -63,13 +62,22 @@ function configExists() {
 }
 
 function getWorkSpacePath() {
-  const configFile = getConfigPath()
-  fs.readFile(configFile, 'utf-8', (err, data) => {
+  log.debug('[getWorkSpacePath] getWorkSpacePath() called')
+  const { fullPath } = getConfigPath()
+
+  fs.readFile(fullPath, 'utf-8', (err, data) => {
     if (err) {
       log.error(`[getWorkSpacePath]`, err)
       return
     }
-    log.debug('[getWorkSpacePath]', data)
+
+    log.verbose(`[getWorkSpacePath] data: ${data}`)
+    const config = JSON.parse(data)
+    const activePath = config.workSpaces.find((ws) => ws.active)?.path
+    log.debug(`[getWorkSpacePath] activePath: ${activePath}`)
+    if (activePath) {
+      workspacePath = activePath
+    }
   })
 }
 
@@ -97,7 +105,6 @@ function openWorkSpace() {
       defaultPath: app.getPath('documents'),
       properties: ['openDirectory']
     })
-    log.debug(res)
   } catch (error) {
     log.error('[openWorkSpace]', error)
   }
