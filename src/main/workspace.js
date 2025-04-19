@@ -5,7 +5,6 @@ import createLogger from './logger'
 import { app, dialog, ipcMain } from 'electron'
 
 const log = createLogger('workspace')
-let workspacePath = getWorkSpacePath()
 
 export function initWorkspace(window) {
   log.info('[initWorkspace] initWorkSpace called')
@@ -111,6 +110,7 @@ function openWorkSpace() {
 
 function buildFileTree() {
   log.info(`[buildFileTree] buildFileTree() called`)
+  const workspacePath = getWorkSpacePath()
 
   readdir(workspacePath, { recursive: true, withFileTypes: true }, (error, files) => {
     if (error) {
