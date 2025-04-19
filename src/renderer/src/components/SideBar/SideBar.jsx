@@ -1,5 +1,4 @@
 import styles from './SideBar.module.css'
-import Projects from '../Projects/Projects'
 import { useEffect, useState, useRef } from "react";
 
 export default function SideBar() {
@@ -35,13 +34,16 @@ export default function SideBar() {
 
   return (
     <div ref={containerRef} className={`${resizing ? "resizing" : ""} ${styles.container} `} style={{ width: `${width}px` }}>
+
       <div className={styles.sidebar}>
-        <Projects />
+        {/* <Projects /> */}
       </div>
+
       <div
         className={styles.divider}
         onMouseDown={() => setResizing(true)}>
       </div>
+
     </div >
   )
 }
