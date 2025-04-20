@@ -28,7 +28,7 @@ export default function FileTree(props) {
 
 
     return (
-        <div className={styles.fileTreeContainer}>
+        <div className={`${styles.fileTreeContainer} noselect`}>
             <h1 className={styles.workspaceHeading}>Workspace</h1>
 
             {directoryEl}
@@ -45,12 +45,23 @@ function File({ name, type }) {
     )
 };
 
-function Directory({ name }) {
+function Directory({ name, path, tree, setTree }) {
 
     const [collapsed, setCollapsed] = useState(true)
+    const [firstClick, setFirstClick] = useState(false)
+
+    function handleDirClick() {
+        setCollapsed(prev => !prev)
+        if (firstClick) {
+
+        }
+    }
 
     return (
-        <div className={styles.dir}>
+        <div
+            onClick={handleDirClick}
+            className={styles.dir}
+        >
             {collapsed ? <Folder size={16} /> : <FolderOpen size={16} />}
             <span className={styles.dirName}>{name}</span>
         </div >

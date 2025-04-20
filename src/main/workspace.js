@@ -3,6 +3,7 @@ import fs, { readdir } from 'node:fs'
 import os from 'node:os'
 import { createLogger } from './logger'
 import { app, dialog, ipcMain } from 'electron'
+import { Children } from 'react'
 
 const log = createLogger('workspace')
 let workspacePath = getWorkSpacePath()
@@ -126,7 +127,8 @@ function getFileTree(dir) {
         return {
           name: file.name,
           path: path.join(workspacePath, file.name),
-          type: file.isDirectory() ? 'directory' : 'file'
+          type: file.isDirectory() ? 'directory' : 'file',
+          children: []
         }
       })
       log.verbose(`[getFileTree] files: ${JSON.stringify(fileTree, null, 2)}`)
