@@ -1,10 +1,11 @@
 import path from 'node:path'
 import fs, { readdir } from 'node:fs'
 import os from 'node:os'
-import createLogger from './logger'
+import { createLogger } from './logger'
 import { app, dialog, ipcMain } from 'electron'
 
 const log = createLogger('workspace')
+let workspacePath = getWorkSpacePath()
 
 export function initWorkspace(window) {
   log.info('[initWorkspace] initWorkSpace called')
@@ -14,9 +15,8 @@ export function initWorkspace(window) {
     askWorkSpacePath(window)
   }
 
-  buildFileTree()
-
   ipcMain.handle('openWorkSpace', openWorkSpace)
+  ipcMain.handle('getFileTree', getFileTree)
 }
 
 function getConfigPath() {
@@ -60,6 +60,7 @@ function configExists() {
 }
 
 function getWorkSpacePath() {
+  log.debug('[getWorkSpacePath] getWorkSpacePath() called')
   const { fullPath } = getConfigPath()
 
   try {
@@ -99,31 +100,37 @@ function openWorkSpace() {
   log.debug('[openWorkSpace] openWorkSpace called')
   try {
     const res = dialog.showOpenDialogSync({
-      title: 'Open WorkSpace',
+      title: 'Open or Create WorkSpace',
       defaultPath: app.getPath('documents'),
       properties: ['openDirectory']
     })
+    // TODO: set global workspace var or something?
+    // TODO: add workspace path if doesnt exist in config.json
   } catch (error) {
     log.error('[openWorkSpace]', error)
   }
 }
 
-function buildFileTree() {
-  log.info(`[buildFileTree] buildFileTree() called`)
-  const workspacePath = getWorkSpacePath()
+function getFileTree(dir) {
+  log.info(`[getFileTree] getFileTree() called`)
 
-  readdir(workspacePath, { recursive: true, withFileTypes: true }, (error, files) => {
-    if (error) {
-      log.error(`[buildFileTree] error: ${error}`)
-      return
-    }
-    const fileTree = files.map((file) => {
-      return {
-        name: file.name,
-        path: path.join(workspacePath, file.name),
-        type: file.isDirectory() ? 'directory' : 'file'
+  return new Promise((resolve, reject) => {
+    readdir(workspacePath, { withFileTypes: true }, (error, files) => {
+      if (error) {
+        log.error(`[getFileTree] error: ${error}`)
+        reject(error)
+        return
       }
+
+      const fileTree = files.map((file) => {
+        return {
+          name: file.name,
+          path: path.join(workspacePath, file.name),
+          type: file.isDirectory() ? 'directory' : 'file'
+        }
+      })
+      log.verbose(`[getFileTree] files: ${JSON.stringify(fileTree, null, 2)}`)
+      resolve(fileTree)
     })
-    log.verbose(`[buildFileTree] files: ${JSON.stringify(fileTree, null, 2)}`)
   })
 }

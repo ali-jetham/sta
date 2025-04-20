@@ -4,12 +4,9 @@ import log from 'electron-log'
 
 const api = {
   askWorkSpaceDialog: function (callback) {
-    log.debug('askWorkSpaceDialog listener added')
+    log.debug('[preload] askWorkSpaceDialog listener added')
     ipcRenderer.on('askWorkSpace', () => callback())
-  },
-
-  onUpdateCounter: (callback) =>
-    ipcRenderer.on('update-counter', (_event, value) => callback(value))
+  }
 }
 
 if (process.contextIsolated) {
