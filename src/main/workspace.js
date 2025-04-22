@@ -95,7 +95,7 @@ function createConfig() {
   })
 }
 
-function setWorkspacePath(workspace) {}
+function setWorkspacePath(workspace) { }
 
 function openWorkSpace() {
   log.debug('[openWorkSpace] openWorkSpace called')
@@ -112,11 +112,11 @@ function openWorkSpace() {
   }
 }
 
-function getFileTree(dir) {
+function getFileTree(event, dir = workspacePath) {
   log.info(`[getFileTree] getFileTree() called`)
 
   return new Promise((resolve, reject) => {
-    readdir(workspacePath, { withFileTypes: true }, (error, files) => {
+    readdir(dir, { withFileTypes: true }, (error, files) => {
       if (error) {
         log.error(`[getFileTree] error: ${error}`)
         reject(error)
@@ -126,7 +126,7 @@ function getFileTree(dir) {
       const fileTree = files.map((file) => {
         return {
           name: file.name,
-          path: path.join(workspacePath, file.name),
+          path: path.join(dir, file.name),
           type: file.isDirectory() ? 'directory' : 'file',
           children: []
         }

@@ -53,7 +53,13 @@ function Directory({ name, path, tree, setTree }) {
     function handleDirClick() {
         setCollapsed(prev => !prev)
         if (firstClick) {
+            setFirstClick(true)
+            log.info('[handleDirClick] first click set to true')
+            window.electron.ipcRenderer.invoke('getFileTree', path)
+                .then((response) => {
 
+                })
+                .catch()
         }
     }
 
