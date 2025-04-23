@@ -1,3 +1,4 @@
+import "@fontsource-variable/open-sans"
 import './assets/main.css'
 
 import { scan } from 'react-scan'

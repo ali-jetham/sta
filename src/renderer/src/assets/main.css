@@ -43,6 +43,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   background-color: var(--primary-bg-color);
+  font-family: "Open Sans";
 }
 
 #root {

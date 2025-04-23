@@ -1,0 +1,6 @@
+.file {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    padding-left: 1rem;
+}

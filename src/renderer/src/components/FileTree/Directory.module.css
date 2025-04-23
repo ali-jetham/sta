@@ -1,8 +1,19 @@
-.dir {
+.directory {
     display: flex;
     align-items: center;
+    gap: .4rem;
 }
 
-/* .dirName {
-    font-size: 1rem;
-} */
+.childrenContainer {
+    display: flex;
+}
+
+.guideLine {
+    min-width: .06rem;
+    background-color: var(--primary-border-color);
+    margin-left: .4rem;
+}
+
+.children {
+    padding-left: .8rem;
+}

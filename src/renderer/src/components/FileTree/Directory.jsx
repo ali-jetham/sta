@@ -6,8 +6,7 @@ import File from './File'
 
 const log = createRendererLogger('Directory')
 
-
-export default function Directory({ name, path, tree, setTree }) {
+export default function Directory({ name, path, setTree }) {
 
     const [collapsed, setCollapsed] = useState(true)
     const [firstClick, setFirstClick] = useState(false)
@@ -44,27 +43,32 @@ export default function Directory({ name, path, tree, setTree }) {
 
         <div className={styles.dirContainer}>
 
-            <div onClick={handleDirClick} className={styles.dir}>
+            <div onClick={handleDirClick} className={styles.directory}>
                 {collapsed ? <Folder size={16} /> : <FolderOpen size={16} />}
                 <span className={styles.dirName}>{name}</span>
             </div >
 
             {!collapsed && children && (
-                <div className={styles.children}>
-                    {children.map((child) =>
-                        child.type === 'directory' ? (
-                            <Directory
-                                key={child.path}
-                                name={child.name}
-                                path={child.path}
-                                setTree={setTree}
-                                children={child.children}
-                            />
-                        ) : (
-                            <File key={child.path} name={child.name} />
-                        )
-                    )}
+                <div className={styles.childrenContainer}>
+                    <div className={styles.guideLine}></div>
+
+                    <div className={styles.children}>
+                        {children.map((child) =>
+                            child.type === 'directory' ? (
+                                <Directory
+                                    key={child.path}
+                                    name={child.name}
+                                    path={child.path}
+                                    setTree={setTree}
+                                    children={child.children}
+                                />
+                            ) : (
+                                <File key={child.path} name={child.name} />
+                            )
+                        )}
+                    </div>
                 </div>
+
             )}
         </div>
     )
