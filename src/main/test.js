@@ -1,52 +1,30 @@
-const tree = [
-  {
-    name: 'work',
-    type: 'file',
-    path: '/home/Documents/work',
-    children: []
-  },
-  {
-    name: 'school',
-    type: 'file',
-    path: '/home/Documents/school',
-    children: []
-  },
-  {
-    name: 'misc',
-    type: 'dir',
-    path: '/home/Documents/misc',
-    children: []
-  }
-]
+import { error } from 'node:console'
+import fs from 'node:fs'
 
-const subTree = [
-  {
-    name: 'work',
-    type: 'file',
-    path: '/home/Documents/misc/work',
-    children: []
+const data = fs.readFileSync('/home/retr0/.config/sta/config.json.bak', 'utf-8')
+console.log(data)
+const config = JSON.parse(data)
+config.workSpaces.push({ baka: true })
+console.log(config)
+fs.writeFile('/home/retr0/.config/sta/config.json.bak', JSON.stringify(config), (error) => {
+  if (error) {
+    console.error(error)
   }
-]
-
-// console.log('Tree: ', tree)
-// console.log('SubTree: ', subTree)
-
-const updatedTree = tree.map((item) => {
-  if (item.path === '/home/Documents/misc' && item.type === 'dir') {
-    return { ...item, children: subTree }
-  }
-  return item
 })
 
-console.log('Updated Tree:', JSON.stringify(updatedTree))
-
-const returnedLog = [
-  { name: 'work', type: 'file', path: '/home/Documents/work', children: [] },
-  { name: 'school', type: 'file', path: '/home/Documents/school', children: [] },
-  {
-    name: 'misc',
-    type: 'dir',
-    path: '/home/Documents/misc',
-    children: [{ name: 'work', type: 'file', path: '/home/Documents/misc/work', children: [] }]
-  }
-]
+// {
+//     "workSpaces": [
+//       {
+//         "path": "/home/retr0/Documents/test",
+//         "active": true
+//       },
+//       {
+//         "path": "/home/retr0/Documents/bakaSus",
+//         "active": false
+//       },
+//       {
+//         "path": "/home/retr0/Documents/baka",
+//         "active": false
+//       }
+//     ]
+//   }

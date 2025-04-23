@@ -1,9 +1,14 @@
 import styles from './WorkSpaceDialog.module.css'
 
-export default function WorkSpaceDialog() {
+export default function WorkSpaceDialog({ setVisible }) {
 
     function openWorkSpace() {
         window.electron.ipcRenderer.invoke('openWorkSpace')
+            .then(res => {
+                if (res) {
+                    setVisible(false)
+                }
+            })
     }
 
 

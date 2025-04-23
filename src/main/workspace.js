@@ -15,6 +15,10 @@ export function initWorkspace(window) {
     askWorkSpacePath(window)
   }
 
+  if (!workspacePath) {
+    askWorkSpacePath(window)
+  }
+
   ipcMain.handle('openWorkSpace', openWorkSpace)
   ipcMain.handle('getFileTree', getFileTree)
 }
@@ -89,30 +93,51 @@ function getWorkSpacePath() {
     }
   } catch (err) {
     log.error('[getWorkSpacePath]', err)
+    return undefined
   }
-
-  return undefined
 }
 
-function setWorkspacePath(workspacePath) {
-  log.debug('[getWorkSpacePath] getWorkSpacePath() called')
+function addWorkspacePath(workspacePath) {
+  log.debug('[addWorkspacePath] addWorkspacePath() called')
+  const { fullPath } = getConfigPath()
+
+  const data = fs.readFileSync(fullPath, 'utf-8')
+  console.log(data)
+  const config = JSON.parse(data)
+  config.workSpaces.push({ path: workspacePath, active: true })
+  console.log(config)
+
+  fs.writeFile(fullPath, JSON.stringify(config), (error) => {
+    if (error) {
+      console.error(error)
+    }
+  })
 }
 
 function openWorkSpace() {
   log.debug('[openWorkSpace] openWorkSpace called')
-  try {
-    const res = dialog.showOpenDialogSync({
-      title: 'Open or Create WorkSpace',
-      defaultPath: app.getPath('documents'),
-      properties: ['openDirectory']
-    })
-    // TODO: add workspace path if doesnt exist in config.json
-  } catch (error) {
-    log.error('[openWorkSpace]', error)
-  }
+
+  return new Promise((resolve, reject) => {
+    try {
+      const res = dialog.showOpenDialogSync({
+        title: 'Open or Create WorkSpace',
+        defaultPath: app.getPath('documents'),
+        properties: ['openDirectory']
+      })
+      if (res) {
+        log.info(`[openWorkSpace] res: ${res}`)
+        addWorkspacePath(res[0])
+        resolve(res)
+      }
+      reject(res)
+    } catch (error) {
+      log.error('[openWorkSpace]', error)
+      reject(error)
+    }
+  })
 }
 
-function getFileTree(event, dir = workspacePath) {
+function getFileTree(event, dir = getWorkSpacePath()) {
   log.info(`[getFileTree] getFileTree() called with dir: ${dir}`)
 
   return new Promise((resolve, reject) => {

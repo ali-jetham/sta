@@ -38,10 +38,13 @@ function App() {
       {showOverlay && <Overlay />}
 
       <Ribbon sideBarToggle={sideBarToggle} />
+
       {showSideBar && <SideBar isVisible={showSideBar} />}
+
       <MainView />
+
       {showWorkSpaceDialog && createPortal(
-        <WorkSpaceDialog />, document.body
+        <WorkSpaceDialog setVisible={setShowWorkSpaceDialog} />, document.body
       )}
 
     </div>
