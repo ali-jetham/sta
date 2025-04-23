@@ -7,9 +7,6 @@ export default function SideBar() {
   const [width, setWidth] = useState(192)
   const containerRef = useRef(null);
 
-  const [files, setFiles] = useState(null)
-
-
   useEffect(() => {
     function handleMouseMove(event) {
       if (resizing) {
@@ -36,20 +33,13 @@ export default function SideBar() {
 
   }, [resizing])
 
-  // useEffect(() => {
-  //   window.electron.ipcRenderer.invoke('getFileTree')
-  //     .then((response) => setFiles(response))
-  //     .catch((error) => log.error(`Failed to get file tree ${error}`))
-  // }, []
-  // )
-
   return (
     <div ref={containerRef}
       className={`${resizing ? "resizing" : ""} ${styles.container} `} style={{ width: `${width}px` }}
     >
 
       <div className={styles.sidebar}>
-        <FileTree files={files} />
+        <FileTree />
       </div>
 
       <div
