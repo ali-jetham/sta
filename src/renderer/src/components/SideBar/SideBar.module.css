@@ -1,15 +1,16 @@
 .container {
     display: flex;
-    /* padding-left: 1.2rem; */
     background: var(--primary-bg-color);
     min-width: 12rem;
     max-width: 50rem;
+    overflow: hidden;
 }
 
 .sidebar {
     width: 100%;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    overflow: hidden;
     color: var(--primary-font-color);
 }
 

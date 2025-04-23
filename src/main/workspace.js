@@ -3,7 +3,6 @@ import fs, { readdir } from 'node:fs'
 import os from 'node:os'
 import { createLogger } from './logger'
 import { app, dialog, ipcMain } from 'electron'
-import { Children } from 'react'
 
 const log = createLogger('workspace')
 let workspacePath = getWorkSpacePath()
@@ -60,6 +59,20 @@ function configExists() {
   }
 }
 
+function createConfig() {
+  const { basePath, fullPath } = getConfigPath()
+  const configJson = '{"workSpaces": []}'
+  fs.mkdirSync(path.dirname(basePath), { recursive: true })
+
+  fs.writeFile(fullPath, configJson, { flag: 'w+' }, (err) => {
+    if (err) {
+      log.error(err)
+    } else {
+      log.debug('Config file made successfully')
+    }
+  })
+}
+
 function getWorkSpacePath() {
   log.debug('[getWorkSpacePath] getWorkSpacePath() called')
   const { fullPath } = getConfigPath()
@@ -81,21 +94,9 @@ function getWorkSpacePath() {
   return undefined
 }
 
-function createConfig() {
-  const { basePath, fullPath } = getConfigPath()
-  const configJson = '{"workSpaces": []}'
-  fs.mkdirSync(path.dirname(basePath), { recursive: true })
-
-  fs.writeFile(fullPath, configJson, { flag: 'w+' }, (err) => {
-    if (err) {
-      log.error(err)
-    } else {
-      log.debug('Config file made successfully')
-    }
-  })
+function setWorkspacePath(workspacePath) {
+  log.debug('[getWorkSpacePath] getWorkSpacePath() called')
 }
-
-function setWorkspacePath(workspace) {}
 
 function openWorkSpace() {
   log.debug('[openWorkSpace] openWorkSpace called')
@@ -105,7 +106,6 @@ function openWorkSpace() {
       defaultPath: app.getPath('documents'),
       properties: ['openDirectory']
     })
-    // TODO: set global workspace var or something?
     // TODO: add workspace path if doesnt exist in config.json
   } catch (error) {
     log.error('[openWorkSpace]', error)

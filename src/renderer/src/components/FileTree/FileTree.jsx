@@ -27,7 +27,7 @@ export default function FileTree(props) {
 	const directoryEl = directories.map(dir => <Directory name={dir.name} path={dir.path} setTree={setTree} />)
 
 	const files = tree.filter(file => file.type === 'file')
-	const filesEl = files.map(file => <File name={file.name} />)
+	const filesEl = files.map(file => <File fileName={file.name} path={file.path} />)
 
 
 	return (

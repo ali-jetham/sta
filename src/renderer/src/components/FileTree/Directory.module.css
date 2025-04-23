@@ -1,11 +1,20 @@
+/* .directoryContainer {
+    max-width: 100%;
+} */
+
 .directory {
     display: flex;
     align-items: center;
     gap: .4rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .childrenContainer {
     display: flex;
+    max-width: 100%;
 }
 
 .guideLine {

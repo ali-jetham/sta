@@ -40,8 +40,7 @@ export default function Directory({ name, path, setTree }) {
     }
 
     return (
-
-        <div className={styles.dirContainer}>
+        <div className={styles.directoryContainer}>
 
             <div onClick={handleDirClick} className={styles.directory}>
                 {collapsed ? <Folder size={16} /> : <FolderOpen size={16} />}
@@ -63,7 +62,7 @@ export default function Directory({ name, path, setTree }) {
                                     children={child.children}
                                 />
                             ) : (
-                                <File key={child.path} name={child.name} />
+                                <File key={child.path} fileName={child.name} path={child.path} />
                             )
                         )}
                     </div>
