@@ -95,7 +95,7 @@ function createConfig() {
   })
 }
 
-function setWorkspacePath(workspace) { }
+function setWorkspacePath(workspace) {}
 
 function openWorkSpace() {
   log.debug('[openWorkSpace] openWorkSpace called')
@@ -113,7 +113,7 @@ function openWorkSpace() {
 }
 
 function getFileTree(event, dir = workspacePath) {
-  log.info(`[getFileTree] getFileTree() called`)
+  log.info(`[getFileTree] getFileTree() called with dir: ${dir}`)
 
   return new Promise((resolve, reject) => {
     readdir(dir, { withFileTypes: true }, (error, files) => {

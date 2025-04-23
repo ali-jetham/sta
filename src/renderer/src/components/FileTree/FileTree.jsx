@@ -1,5 +1,5 @@
 import styles from './FileTree.module.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Children } from 'react'
 import { Folder, FolderOpen } from 'lucide-react'
 import { createRendererLogger } from '../../utils/logger'
 
@@ -20,8 +20,10 @@ export default function FileTree(props) {
         return
     }
 
+    log.info(`tree: ${JSON.stringify(tree, null, 2)}`)
+
     const directories = tree.filter(file => file.type === 'directory')
-    const directoryEl = directories.map(dir => <Directory name={dir.name} />)
+    const directoryEl = directories.map(dir => <Directory name={dir.name} path={dir.path} setTree={setTree} />)
 
     const files = tree.filter(file => file.type === 'file')
     const filesEl = files.map(file => <File name={file.name} />)
@@ -52,14 +54,27 @@ function Directory({ name, path, tree, setTree }) {
 
     function handleDirClick() {
         setCollapsed(prev => !prev)
-        if (firstClick) {
+
+        if (!firstClick) {
             setFirstClick(true)
             log.info('[handleDirClick] first click set to true')
             window.electron.ipcRenderer.invoke('getFileTree', path)
                 .then((response) => {
-
+                    log.info('[handleDirClick] then response')
+                    setTree((prevTree) => {
+                        const updatedTree = prevTree.map((item) => {
+                            if (item.path === path && item.type === 'directory') {
+                                return { ...item, children: response }
+                            }
+                            return item
+                        })
+                        log.verbose(`[Directory] updatedTree: ${JSON.stringify(updatedTree, null, 2)}`)
+                        return updatedTree
+                    })
                 })
-                .catch()
+                .catch((error) => {
+                    log.error(`[Directory] ${error}`)
+                })
         }
     }
 
