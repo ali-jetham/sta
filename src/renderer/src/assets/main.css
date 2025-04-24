@@ -7,7 +7,9 @@
 
   --primary-font-color: #999;
 
-  --active-color: #8A5CF5;
+  --active-color: #E46960;
+
+  --button-bg-color: #ff5678;
 }
 
 [data-theme="light"] {

@@ -1,6 +1,7 @@
 import styles from './FileTree.module.css'
-import { useState, useEffect, Children } from 'react'
 import { createRendererLogger } from '../../utils/logger'
+import { useState, useEffect } from 'react'
+import { Plus } from 'lucide-react'
 import Directory from './Directory'
 import File from './File'
 
@@ -33,7 +34,11 @@ export default function FileTree(props) {
 
 	return (
 		<div className={`${styles.fileTreeContainer} noselect`}>
-			<h1 className={styles.workspaceHeading}>Workspace</h1>
+
+			<div className={styles.headingContainer}>
+				<h1 className={styles.workspaceHeading}>Workspace</h1>
+				<button className={styles.addButton}><Plus size={19.2} /></button>
+			</div>
 
 			{directoryEl}
 			{filesEl}
