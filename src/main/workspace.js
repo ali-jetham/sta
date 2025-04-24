@@ -1,5 +1,5 @@
 import path from 'node:path'
-import fs, { readdir } from 'node:fs'
+import fs from 'node:fs'
 import os from 'node:os'
 import { createLogger } from './logger'
 import { app, dialog, ipcMain } from 'electron'
@@ -20,7 +20,6 @@ export function initWorkspace(window) {
   }
 
   ipcMain.handle('openWorkSpace', openWorkSpace)
-  ipcMain.handle('getFileTree', getFileTree)
 }
 
 function getConfigPath() {
@@ -77,7 +76,7 @@ function createConfig() {
   })
 }
 
-function getWorkSpacePath() {
+export function getWorkSpacePath() {
   log.debug('[getWorkSpacePath] getWorkSpacePath() called')
   const { fullPath } = getConfigPath()
 
@@ -134,30 +133,5 @@ function openWorkSpace() {
       log.error('[openWorkSpace]', error)
       reject(error)
     }
-  })
-}
-
-function getFileTree(event, dir = getWorkSpacePath()) {
-  log.info(`[getFileTree] getFileTree() called with dir: ${dir}`)
-
-  return new Promise((resolve, reject) => {
-    readdir(dir, { withFileTypes: true }, (error, files) => {
-      if (error) {
-        log.error(`[getFileTree] error: ${error}`)
-        reject(error)
-        return
-      }
-
-      const fileTree = files.map((file) => {
-        return {
-          name: file.name,
-          path: path.join(dir, file.name),
-          type: file.isDirectory() ? 'directory' : 'file',
-          children: []
-        }
-      })
-      log.verbose(`[getFileTree] files: ${JSON.stringify(fileTree, null, 2)}`)
-      resolve(fileTree)
-    })
   })
 }
