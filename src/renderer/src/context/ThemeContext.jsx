@@ -6,7 +6,6 @@ function useTheme() {
   return useContext(ThemeContext)
 }
 
-export function AuthProvider({ children }) {
-    
+export function ThemeProvider({ children }) {
   return <ThemeContext.Provider value={{}}>{children}</ThemeContext.Provider>
 }
