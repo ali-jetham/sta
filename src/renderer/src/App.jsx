@@ -4,7 +4,7 @@ import styles from './App.module.css'
 import MainView from './components/MainView/MainView.jsx'
 import Ribbon from './components/Ribbon/Ribbon.jsx'
 import SideBar from './components/SideBar/SideBar.jsx'
-import WorkSpaceDialog from './components/WorkSpaceDialog/WorkSpaceDialog.jsx'
+import WorkSpaceDialog from './components/Dialogs/WorkSpaceDialog/WorkSpaceDialog.jsx'
 import Overlay from './components/Overlay/Overlay.jsx'
 import { createRendererLogger } from './utils/logger.js'
 
@@ -12,7 +12,7 @@ const log = createRendererLogger('[App]')
 
 function App() {
   const [showSideBar, setShowSideBar] = useState(false)
-  const [showWorkSpaceDialog, setShowWorkSpaceDialog] = useState(false)
+  const [showWorkSpaceDialog, setShowWorkSpaceDialog] = useState(true)
   const [showOverlay, setShowOverlay] = useState(false)
 
   function sideBarToggle() {

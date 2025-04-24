@@ -8,6 +8,7 @@ const log = createRendererLogger('FileTree')
 
 export default function FileTree(props) {
 
+	const workSpacePath = useState()
 	const [tree, setTree] = useState(null)
 
 	useEffect(() => {
