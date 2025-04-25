@@ -36,7 +36,7 @@ function App() {
 
       <Ribbon toggleSideBar={toggleSideBar} />
 
-      {showSideBar && <SideBar isVisible={showSideBar} />}
+      {showSideBar && <SideBar />}
 
       <MainView />
 

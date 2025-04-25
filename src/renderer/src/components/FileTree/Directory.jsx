@@ -1,11 +1,11 @@
 import styles from './Directory.module.css'
-import { useRef, useState } from 'react'
+import { createRendererLogger } from '../../utils/logger'
+import { useRef, useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { Folder, FolderOpen } from 'lucide-react'
-import { createRendererLogger } from '../../utils/logger'
-import File from './File'
-import CreateContextMenu from '../CreateContextMenu/CreateContextMenu'
 import { useClickOutside } from '../../hooks/useClickOutside'
+import File from './File'
+import ContextMenu from '../ContextMenu/CreateContextMenu'
 
 const log = createRendererLogger('Directory')
 
@@ -14,12 +14,15 @@ export default function Directory({ name, path, setTree }) {
   const [firstClick, setFirstClick] = useState(false)
   const [children, setChildren] = useState(null)
   const [showCreateMenu, setShowCreateMenu] = useState(false)
-  const createMenuRef = useRef()
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 300 })
+  const createMenuRef = useRef(null)
 
   useClickOutside(createMenuRef, () => setShowCreateMenu(false))
 
-  function handleContextMenu() {
-    log.info('handleContextMenu() called')
+  function handleContextMenu(event) {
+    log.debug('handleContextMenu() called')
+    log.debug(`x: ${event.clientX} y: ${event.clientY} `)
+    setMenuPosition({ top: event.clientX, left: event.clientY })
     setShowCreateMenu(true)
   }
 
@@ -61,7 +64,6 @@ export default function Directory({ name, path, setTree }) {
         {collapsed ? <Folder size={16} /> : <FolderOpen size={16} />}
         <span className={styles.dirName}>{name}</span>
       </div>
-
       {!collapsed && children && (
         <div className={styles.childrenContainer}>
           <div className={styles.guideLine}></div>
@@ -70,26 +72,28 @@ export default function Directory({ name, path, setTree }) {
             {children.map((child) =>
               child.type === 'directory' ? (
                 <Directory
-                  key={child.path}
                   name={child.name}
                   path={child.path}
                   setTree={setTree}
-                  children={child.children}
-                  setShowCreateContext={setShowCreateContext}
                 />
               ) : (
-                <File
-                  key={child.path}
-                  fileName={child.name}
-                  path={child.path}
-                />
+                <File fileName={child.name} path={child.path} />
               )
             )}
           </div>
         </div>
       )}
-      {showCreateMenu &&
-        createPortal(<CreateContextMenu ref={createMenuRef} />, document.body)}
+      <ContextMenu
+        ref={createMenuRef}
+        active={showCreateMenu}
+        menuPosition={menuPosition}
+      />
+
+      {/* {showCreateMenu &&
+        createPortal(
+          <CreateContextMenu ref={createMenuRef} active={showCreateMenu} />,
+          document.body
+        )} */}
     </div>
   )
 }

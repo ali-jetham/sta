@@ -2,11 +2,12 @@ import styles from './SideBar.module.css'
 import { useEffect, useState, useRef } from 'react'
 import FileTree from '../FileTree/FileTree'
 
-export default function SideBar(props) {
+export default function SideBar() {
   const [resizing, setResizing] = useState(false)
   const [width, setWidth] = useState(192)
   const containerRef = useRef(null)
 
+  // TODO: make this into a hook
   useEffect(() => {
     function handleMouseMove(event) {
       if (resizing) {
@@ -38,13 +39,13 @@ export default function SideBar(props) {
       style={{ width: `${width}px` }}
     >
       <div className={styles.sidebar}>
-        <FileTree
-          showCreateContext={props.showCreateContext}
-          setShowCreateContext={props.setShowCreateContext}
-        />
+        <FileTree />
       </div>
 
-      <div className={styles.divider} onMouseDown={() => setResizing(true)}></div>
+      <div
+        className={styles.divider}
+        onMouseDown={() => setResizing(true)}
+      ></div>
     </div>
   )
 }

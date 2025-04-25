@@ -21,17 +21,11 @@ export default function FileTree(props) {
   if (tree === null) {
     return
   }
-
   log.info(`tree: ${JSON.stringify(tree, null, 2)}`)
 
   const directories = tree.filter((file) => file.type === 'directory')
   const directoryEl = directories.map((dir) => (
-    <Directory
-      name={dir.name}
-      path={dir.path}
-      setTree={setTree}
-      setShowCreateContext={props.setShowCreateContext}
-    />
+    <Directory name={dir.name} path={dir.path} setTree={setTree} />
   ))
 
   const files = tree.filter((file) => file.type === 'file')
