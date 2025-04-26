@@ -8,6 +8,7 @@ const log = createLogger('fileManager')
 
 export function initFileManager() {
   ipcMain.handle('getFileTree', getFileTree)
+  ipcMain.on('openFile', openFile)
 }
 
 function getFileTree(event, dir = getWorkSpacePath()) {
@@ -32,5 +33,17 @@ function getFileTree(event, dir = getWorkSpacePath()) {
       log.verbose(`[getFileTree] files: ${JSON.stringify(fileTree, null, 2)}`)
       resolve(fileTree)
     })
+  })
+}
+
+function openFile(event, path) {
+  log.debug(`[openFile] with ${path}`)
+  fs.readFile(path, 'utf-8', (err, data) => {
+    if (err) {
+      log.error(`[openFile] ${err}`)
+      return
+    }
+    log.verbose(data)
+    event.sender.send('openFileView', data)
   })
 }

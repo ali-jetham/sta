@@ -6,13 +6,18 @@ import Editor from '../Editor/Editor'
 
 export default function MainView() {
   const [view, setView] = useState('editor')
+  const [file, setFile] = useState()
+
+  window.electron.ipcRenderer.on('openFileView', (event, fileContents) => {
+    setFile(fileContents)
+  })
 
   return (
     <div className={`${styles.mainViewContainer} noselect`}>
       <MainHeader view={view} setView={setView} />
 
       {view === 'kanban' ? <Kanban /> : null}
-      {view === 'editor' ? <Editor /> : null}
+      {view === 'editor' ? <Editor fileContent={file} /> : null}
     </div>
   )
 }
