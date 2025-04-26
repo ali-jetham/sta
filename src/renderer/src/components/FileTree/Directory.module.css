@@ -19,7 +19,7 @@
 
 .guideLine {
     min-width: .06rem;
-    background-color: var(--primary-border-color);
+    background-color: var(--border-color);
     margin-left: .4rem;
 }
 

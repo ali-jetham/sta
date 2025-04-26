@@ -4,6 +4,7 @@
     min-width: 12rem;
     max-width: 50rem;
     overflow: hidden;
+    padding-left: 1rem;
 }
 
 .sidebar {
@@ -11,12 +12,12 @@
     padding-top: 1rem;
     padding-bottom: 1rem;
     overflow: hidden;
-    color: var(--primary-font-color);
+    color: var(--font-primary-color);
 }
 
 .divider {
     min-width: .1rem;
-    background-color: var(--primary-font-color);
+    background-color: var(--font-primary-color);
 }
 
 .divider.resizing {

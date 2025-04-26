@@ -8,15 +8,9 @@ export default function Ribbon(props) {
         <PanelLeft />
       </button>
 
-      <div className={styles.bottom}>
-        <button className={styles.folderRoot}>
-          <FolderRoot />
-        </button>
-
-        <button className={styles.settings}>
-          <Settings />
-        </button>
-      </div>
+      <button className={styles.settings}>
+        <Settings />
+      </button>
     </div>
   )
 }
