@@ -1,8 +1,6 @@
-export default function Editor(props) {
-  return (
-    <div>
-      <h1>Editor</h1>
-      <textarea name="editor" id="editor" value={props.fileContent}></textarea>
-    </div>
-  )
+import styles from './Editor.module.css'
+import { useEffect } from 'react'
+
+export default function Editor() {
+  return <div className={styles.editorContainer}></div>
 }
