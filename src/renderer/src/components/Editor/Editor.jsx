@@ -8,7 +8,7 @@ import { createRendererLogger } from '../../utils/logger'
 const log = createRendererLogger('Editor')
 
 export default function Editor({ fileContent }) {
-  const extensions = [StarterKit]
+  const extensions = [StarterKit, TaskList]
   const content = fileContent || 'Open a Project'
 
   const editor = useEditor({

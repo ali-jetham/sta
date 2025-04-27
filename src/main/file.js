@@ -3,14 +3,21 @@ import { createLogger } from './logger'
 import { ipcMain } from 'electron'
 import fs from 'node:fs'
 import path from 'node:path'
+import { marked } from 'marked'
 
 const log = createLogger('file')
+marked.use({
+  gfm: true,
+  pedantic: false,
+  breaks: true
+})
 
 export function initFile() {
   ipcMain.handle('file:getTree', getFileTree)
   ipcMain.on('file:openFile', openFile)
 }
 
+// Return a file tree object.
 function getFileTree(event, dir = getWorkSpacePath()) {
   log.info(`[getFileTree] called with dir: ${dir}`)
 
@@ -36,6 +43,7 @@ function getFileTree(event, dir = getWorkSpacePath()) {
   })
 }
 
+// Return HTML of a markdown file.
 function openFile(event, path) {
   log.debug(`[openFile] with ${path}`)
   fs.readFile(path, 'utf-8', (err, data) => {
@@ -43,7 +51,8 @@ function openFile(event, path) {
       log.error(`[openFile] ${err}`)
       return
     }
-    log.verbose(data)
-    event.sender.send('MainView:openFile', { data, path })
+    const htmlData = marked.parse(data)
+    log.verbose(htmlData)
+    event.sender.send('MainView:openFile', { htmlData, path })
   })
 }
