@@ -5,7 +5,7 @@ import log from 'electron-log'
 const api = {
   askWorkSpaceDialog: function (callback) {
     log.debug('[preload] askWorkSpaceDialog listener added')
-    ipcRenderer.on('askWorkSpace', () => callback())
+    ipcRenderer.on('App:askWorkSpace', () => callback())
   }
 }
 

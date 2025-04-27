@@ -8,7 +8,7 @@ const log = createLogger('file')
 
 export function initFile() {
   ipcMain.handle('file:getTree', getFileTree)
-  ipcMain.on('openFile', openFile)
+  ipcMain.on('file:openFile', openFile)
 }
 
 function getFileTree(event, dir = getWorkSpacePath()) {
@@ -44,6 +44,6 @@ function openFile(event, path) {
       return
     }
     log.verbose(data)
-    event.sender.send('openFileView', { data, path })
+    event.sender.send('MainView:openFile', { data, path })
   })
 }

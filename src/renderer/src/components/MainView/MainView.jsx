@@ -12,10 +12,10 @@ export default function MainView() {
   const [file, setFile] = useState()
 
   window.electron.ipcRenderer.on(
-    'openFileView',
-    (event, { fileContents, path }) => {
-      log.debug(`on openFileView called for ${path}`)
-      setFile(fileContents)
+    'MainView:openFile',
+    (event, { data, path }) => {
+      log.debug(`on openFileView called for ${path} with data ${data}`)
+      setFile(data)
     }
   )
 

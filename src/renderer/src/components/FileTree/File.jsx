@@ -7,7 +7,7 @@ const log = createRendererLogger('File')
 export default function File({ fileName, path }) {
   function handleClick() {
     log.info(`open file with name: ${fileName} and path: ${path}`)
-    window.electron.ipcRenderer.send('openFile', path)
+    window.electron.ipcRenderer.send('file:openFile', path)
   }
 
   return (

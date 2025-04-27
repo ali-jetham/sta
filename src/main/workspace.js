@@ -19,20 +19,22 @@ export function initWorkspace(window) {
     askWorkSpacePath(window)
   }
 
-  ipcMain.handle('openWorkSpace', openWorkSpace)
+  ipcMain.handle('workspace:open', openWorkSpace)
 }
 
 function getConfigPath() {
   let basePath
   switch (process.platform) {
     case 'win32':
-      basePath = process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming')
+      basePath =
+        process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming')
       break
     case 'darwin':
       basePath = path.join(os.homedir(), 'Library', 'Application Support')
       break
     case 'linux':
-      basePath = process.env.XDG_CONFIG_HOME || path.join(os.homedir(), '.config')
+      basePath =
+        process.env.XDG_CONFIG_HOME || path.join(os.homedir(), '.config')
       break
     default:
       basePath = os.homedir()
@@ -45,7 +47,7 @@ function getConfigPath() {
 function askWorkSpacePath(window) {
   log.debug('[askWorkSpacePath] askWorkSpacePath called')
   if (window.webContents) {
-    window.webContents.send('askWorkSpace')
+    window.webContents.send('App:askWorkSpace')
   }
 }
 
@@ -103,6 +105,7 @@ function addWorkspacePath(workspacePath) {
   const data = fs.readFileSync(fullPath, 'utf-8')
   console.log(data)
   const config = JSON.parse(data)
+  // config = config.workSpaces.map((workspace) => (workspace.active = false)) TODO
   config.workSpaces.push({ path: workspacePath, active: true })
   console.log(config)
 
