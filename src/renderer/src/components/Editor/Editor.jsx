@@ -25,7 +25,9 @@ export default function Editor({ fileContent }) {
 
   return (
     <>
-      <EditorContent className={styles.editorContainer} editor={editor} />
+      {fileContent ? (
+        <EditorContent className={styles.editorContainer} editor={editor} />
+      ) : null}
     </>
   )
 }
