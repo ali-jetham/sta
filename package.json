@@ -22,13 +22,17 @@
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
     "@fontsource-variable/open-sans": "^5.2.5",
+    "@tiptap/extension-task-list": "^2.11.7",
     "@tiptap/pm": "^2.11.7",
     "@tiptap/react": "^2.11.7",
+    "@tiptap/starter-kit": "^2.11.7",
     "chokidar": "^4.0.3",
     "electron-log": "^5.3.3",
     "lucide-react": "^0.488.0",
+    "marked": "^15.0.11",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "turndown": "^7.2.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^2.0.0",
