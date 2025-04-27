@@ -11,10 +11,13 @@ export default function MainView() {
   const [view, setView] = useState('editor')
   const [file, setFile] = useState()
 
-  window.electron.ipcRenderer.on('openFileView', (event, fileContents) => {
-    log.debug(`on openFileView called`)
-    setFile(fileContents)
-  })
+  window.electron.ipcRenderer.on(
+    'openFileView',
+    (event, { fileContents, path }) => {
+      log.debug(`on openFileView called for ${path}`)
+      setFile(fileContents)
+    }
+  )
 
   return (
     <div className={`${styles.mainViewContainer} noselect`}>

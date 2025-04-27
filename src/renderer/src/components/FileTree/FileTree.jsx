@@ -13,7 +13,7 @@ export default function FileTree(props) {
 
   useEffect(() => {
     window.electron.ipcRenderer
-      .invoke('getFileTree')
+      .invoke('file:getTree')
       .then((response) => setTree(response))
       .catch((error) => log.error(`Failed to get file tree ${error}`))
   }, [])

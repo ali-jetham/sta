@@ -4,15 +4,15 @@ import { ipcMain } from 'electron'
 import fs from 'node:fs'
 import path from 'node:path'
 
-const log = createLogger('fileManager')
+const log = createLogger('file')
 
-export function initFileManager() {
-  ipcMain.handle('getFileTree', getFileTree)
+export function initFile() {
+  ipcMain.handle('file:getTree', getFileTree)
   ipcMain.on('openFile', openFile)
 }
 
 function getFileTree(event, dir = getWorkSpacePath()) {
-  log.info(`[getFileTree] getFileTree() called with dir: ${dir}`)
+  log.info(`[getFileTree] called with dir: ${dir}`)
 
   return new Promise((resolve, reject) => {
     fs.readdir(dir, { withFileTypes: true }, (error, files) => {
@@ -44,6 +44,6 @@ function openFile(event, path) {
       return
     }
     log.verbose(data)
-    event.sender.send('openFileView', data)
+    event.sender.send('openFileView', { data, path })
   })
 }

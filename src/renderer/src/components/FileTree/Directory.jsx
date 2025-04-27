@@ -33,7 +33,7 @@ export default function Directory({ name, path, setTree }) {
       setFirstClick(true)
       log.info('[handleDirClick] first click set to true')
       window.electron.ipcRenderer
-        .invoke('getFileTree', path)
+        .invoke('file:getTree', path)
         .then((response) => {
           log.info('[handleDirClick] then response')
           setChildren(response)

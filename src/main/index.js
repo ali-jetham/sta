@@ -4,7 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { initWorkspace } from './workspace'
 import { createLogger } from './logger'
-import { initFileManager } from './fileManager'
+import { initFile } from './file'
 
 const log = createLogger('index')
 log.info('Started app')
@@ -41,7 +41,7 @@ function createWindow() {
 
   mainWindow.webContents.on('did-finish-load', () => {
     initWorkspace(mainWindow)
-    initFileManager()
+    initFile()
   })
 }
 
