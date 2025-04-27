@@ -1,19 +1,31 @@
 import styles from './Editor.module.css'
+import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { EditorProvider } from '@tiptap/react'
 import TaskList from '@tiptap/extension-task-list'
+import { useEffect } from 'react'
+import { createRendererLogger } from '../../utils/logger'
 
-export default function Editor() {
+const log = createRendererLogger('Editor')
+
+export default function Editor({ fileContent }) {
   const extensions = [StarterKit]
-  const content = '<p>Hello World!</p>'
+  const content = fileContent || 'Open a Project'
+
+  const editor = useEditor({
+    content,
+    extensions,
+    autofocus: true
+  })
+
+  useEffect(() => {
+    if (fileContent) {
+      editor.commands.setContent(fileContent)
+    }
+  }, [fileContent])
 
   return (
-    <EditorProvider
-      extensions={extensions}
-      content={content}
-      editable={true}
-      autofocus={true}
-      editorContainerProps={{ className: styles.editorContainer }}
-    ></EditorProvider>
+    <>
+      <EditorContent className={styles.editorContainer} editor={editor} />
+    </>
   )
 }
