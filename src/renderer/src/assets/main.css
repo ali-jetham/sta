@@ -52,3 +52,7 @@ body {
   height: 100%;
   width: 100%;
 }
+
+.ProseMirror:focus {
+  outline: none;
+}
