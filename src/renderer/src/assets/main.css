@@ -93,3 +93,11 @@ body {
   height: 100%;
   width: 100%;
 }
+
+.cm-editor {
+  outline: none;
+}
+
+.cm-editor:hover {
+  outline: none;
+}

@@ -9,12 +9,6 @@ import {
 import { nord } from '@uiw/codemirror-theme-nord'
 
 export default function Editor({ fileContent, onFileChange }) {
-  // const [value, setValue] = useState('# Hello World')
-
-  // useEffect(() => {
-  //   setValue(fileContent)
-  // }, [fileContent])
-
   const onChange = useCallback((val, viewUpdate) => {
     onFileChange(val)
   }, [])
