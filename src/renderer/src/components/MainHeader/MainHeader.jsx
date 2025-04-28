@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styles from './MainHeader.module.css'
-import { KanbanSquare, SquarePlus, FileType2 } from 'lucide-react'
+import { KanbanSquare, SquarePlus, FileType2, Save } from 'lucide-react'
 
 export default function MainHeader(props) {
   const [projectName, setProjectName] = useState('projectName')
@@ -31,6 +31,10 @@ export default function MainHeader(props) {
             <KanbanSquare size={20} />
           </button>
         )}
+
+        <button className={styles.actionButton} onClick={props.saveFile}>
+          <Save size={20} />
+        </button>
       </div>
     </div>
   )

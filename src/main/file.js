@@ -2,13 +2,14 @@ import { getWorkSpacePath } from './workspace'
 import { createLogger } from './logger'
 import { ipcMain } from 'electron'
 import fs from 'node:fs'
-import path from 'node:path'
+import path, { resolve } from 'node:path'
 
 const log = createLogger('file')
 
 export function initFile() {
   ipcMain.handle('file:getTree', getFileTree)
   ipcMain.on('file:openFile', openFile)
+  ipcMain.handle('file:saveFile', saveFile)
 }
 
 // Return a file tree object.
@@ -47,5 +48,26 @@ function openFile(event, path) {
     }
     log.verbose(data)
     event.sender.send('MainView:openFile', { data, path })
+  })
+}
+
+function saveFile(event, content, path) {
+  log.debug(`[saveFile] called`)
+
+  return new Promise((resolve, reject) => {
+    if (content && path) {
+      log.debug(`[saveFile] path: ${path} ${content}`)
+      fs.writeFile(path, content, (error) => {
+        if (error) {
+          log.error(error)
+          return reject(err)
+        } else {
+          log.debug(`[saveFile] saveFile success`)
+          return resolve(true)
+        }
+      })
+    } else {
+      return reject(`[saveFile] content or path is null`)
+    }
   })
 }

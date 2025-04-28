@@ -8,23 +8,21 @@ import {
 } from '@codemirror/lang-markdown'
 import { nord } from '@uiw/codemirror-theme-nord'
 
-export default function Editor({ fileContent }) {
-  const [value, setValue] = useState('# Hello World')
+export default function Editor({ fileContent, onFileChange }) {
+  // const [value, setValue] = useState('# Hello World')
 
-  useEffect(() => {
-    setValue(fileContent)
-  }, [fileContent])
+  // useEffect(() => {
+  //   setValue(fileContent)
+  // }, [fileContent])
 
   const onChange = useCallback((val, viewUpdate) => {
-    console.log('val:', val)
-    setValue(val)
+    onFileChange(val)
   }, [])
 
   return (
     <div className={styles.editorContainer}>
       <CodeMirror
-        style={styles.editor}
-        value={value}
+        value={fileContent}
         onChange={onChange}
         theme={nord}
         autoFocus={true}
