@@ -17,6 +17,47 @@
   --primary-bg-color: #fff;
 }
 
+[data-theme="nord-dark"] {
+  color-scheme: dark;
+
+  /* Nord Theme Colors - Polar Night */
+  --nord0: #2e3440;
+  --nord1: #3b4252;
+  --nord2: #434c5e;
+  --nord3: #4c566a;
+
+  /* Nord Theme Colors - Snow Storm */
+  --nord4: #d8dee9;
+  --nord5: #e5e9f0;
+  --nord6: #eceff4;
+
+  /* Nord Theme Colors - Frost */
+  --nord7: #8fbcbb;
+  --nord8: #88c0d0;
+  --nord9: #81a1c1;
+  --nord10: #5e81ac;
+
+  /* Nord Theme Colors - Aurora */
+  --nord11: #bf616a;
+  --nord12: #d08770;
+  --nord13: #ebcb8b;
+  --nord14: #a3be8c;
+  --nord15: #b48ead;
+
+  --primary-bg-color: var(--nord0);
+  --secondary-bg-color: var(--nord1);
+
+  --border-color: var(--nord2);
+
+  --font-primary-color: var(--nord4);
+  --font-secondary-color: var(--nord5);
+  --font-accent-color: var(--nord8);
+
+  --active-color: var(--nord8);
+  --highlight-color: var(--nord14);
+  --error-color: var(--nord11);
+}
+
 *,
 *::before,
 *::after {
@@ -51,8 +92,4 @@ body {
 #root {
   height: 100%;
   width: 100%;
-}
-
-.ProseMirror:focus {
-  outline: none;
 }

@@ -5,10 +5,9 @@
     transform: translate(-50%, -50%);
     min-width: 50%;
     min-height: 20%;
-    background-color: var(--primary-bg-color);
+    background-color: var(--secondary-bg-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
+    border-radius: .5rem;
     padding: 1rem;
     z-index: 1000;
 }
@@ -21,11 +20,15 @@
     align-items: center;
 }
 
-button {
+.createButton {
     font-size: 1rem;
     padding: .4rem;
-    border-radius: .4rem;
+    border-radius: .3rem;
     border: none;
+}
+
+.createButton:hover {
+    background-color: var(--active-color);
 }
 
 h3 {
