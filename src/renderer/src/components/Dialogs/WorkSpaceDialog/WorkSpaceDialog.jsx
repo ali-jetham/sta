@@ -20,7 +20,7 @@ export default function WorkSpaceDialog({ setVisible }) {
           </p>
         </div>
 
-        <button className={styles.button} onClick={openWorkSpace}>
+        <button className={styles.createButton} onClick={openWorkSpace}>
           Create or Open a workspace
         </button>
       </div>

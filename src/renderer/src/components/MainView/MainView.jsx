@@ -13,9 +13,9 @@ export default function MainView() {
 
   window.electron.ipcRenderer.on(
     'MainView:openFile',
-    (event, { htmlData, path }) => {
-      log.debug(`on openFileView called for ${path} with data ${htmlData}`)
-      setFile(htmlData)
+    (event, { data, path }) => {
+      log.debug(`on openFileView called for ${path} with data ${data}`)
+      setFile(data)
     }
   )
 
