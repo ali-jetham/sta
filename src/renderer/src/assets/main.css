@@ -94,10 +94,23 @@ body {
   width: 100%;
 }
 
+/* CodeMirror Editory Styling */
 .cm-editor {
-  outline: none;
+  height: 100%;
 }
 
-.cm-editor:hover {
+.cm-content {
+  padding: 3rem !important;
+}
+
+.cm-theme {
+  height: 100%;
+}
+
+.cm-scroller {
+  scrollbar-color: var(--border-color) var(--primary-bg-color);
+}
+
+.cm-editor.cm-focused {
   outline: none;
 }
