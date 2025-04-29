@@ -2,41 +2,16 @@ import styles from './Editor.module.css'
 import { useState, useCallback, useEffect } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { EditorView } from '@uiw/react-codemirror'
-import {
-  autocompletion,
-  completeFromList,
-  insertCompletionText
-} from '@codemirror/autocomplete'
-import {
-  markdown,
-  markdownLanguage,
-  markdownKeymap
-} from '@codemirror/lang-markdown'
+import { autocompletion, completeFromList, startCompletion } from '@codemirror/autocomplete'
+import { markdown, markdownLanguage, markdownKeymap } from '@codemirror/lang-markdown'
 import { nord } from '@uiw/codemirror-theme-nord'
-import { myCompletions } from '../../utils/markdownCompletions'
+import { bracketCompletions } from '../../utils/markdownCompletions'
 
 export default function Editor({ fileContent, onFileChange }) {
-  const [fontSize, setFontSize] = useState(12)
+  const [fontSize, setFontSize] = useState(11)
   const onChange = useCallback((val, viewUpdate) => {
     onFileChange(val)
   }, [])
-
-  const completions = [
-    {
-      label: 'due',
-      type: 'variable',
-      apply: (view, completion, from, to) => {
-        view.dispatch(insertCompletionText(view.state, '[due:: ]', from, to))
-        view.dispatch({
-          selection: { anchor: to + 4, head: to + 4 }
-        })
-      }
-    },
-    { label: 'done', type: 'variable' },
-    { label: 'created', type: 'variable' },
-    { label: 'completed', type: 'variable' },
-    { label: 'priority', type: 'variable' }
-  ]
 
   return (
     <div className={styles.editorContainer}>
@@ -59,7 +34,7 @@ export default function Editor({ fileContent, onFileChange }) {
           }),
           autocompletion({
             closeOnBlur: true,
-            override: [completeFromList(completions)],
+            override: [bracketCompletions],
             activateOnTyping: true
           })
         ]}
