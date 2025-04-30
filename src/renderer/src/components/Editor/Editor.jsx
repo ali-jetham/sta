@@ -5,7 +5,11 @@ import { EditorView } from '@uiw/react-codemirror'
 import { autocompletion, completeFromList, startCompletion } from '@codemirror/autocomplete'
 import { markdown, markdownLanguage, markdownKeymap } from '@codemirror/lang-markdown'
 import { nord } from '@uiw/codemirror-theme-nord'
-import { bracketCompletions } from '../../utils/markdownCompletions'
+import {
+  bracketCompletions,
+  dateAutoCompletions,
+  priorityAutoCompletions
+} from '../../utils/markdownCompletions'
 
 export default function Editor({ fileContent, onFileChange }) {
   const [fontSize, setFontSize] = useState(11)
@@ -34,7 +38,7 @@ export default function Editor({ fileContent, onFileChange }) {
           }),
           autocompletion({
             closeOnBlur: true,
-            override: [bracketCompletions],
+            override: [bracketCompletions, dateAutoCompletions, priorityAutoCompletions],
             activateOnTyping: true
           })
         ]}
