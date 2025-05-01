@@ -34,7 +34,7 @@ export const bracketCompletions = (context) => {
 }
 
 export const dateAutoCompletions = (context) => {
-  const match = context.matchBefore(/(due|done):: \w*/) // TODO: handle spaces also, for eg: "next week"
+  const match = context.matchBefore(/(due|done|created|start):: \w*/) // TODO: handle spaces also, for eg: "next week"
   if (match) {
     log.debug(JSON.stringify(match))
     const calcFrom = match.text.split("::")[0].length + 3
@@ -96,7 +96,7 @@ const completions = [
   {
     label: 'due',
     type: 'variable',
-    apply: applyCompletion('due:: '),
+    apply: applyCompletion('due:: ', 6),
     boost: 4
   },
   {
@@ -106,16 +106,22 @@ const completions = [
     boost: 3
   },
   {
+    label: 'start',
+    type: 'variable',
+    apply: applyCompletion('start:: ', 8),
+    boost: 2
+  },
+  {
     label: 'created',
     type: 'variable',
     apply: applyCompletion('created:: ', 10),
-    boost: 2
+    boost: 1
   },
   {
     label: 'priority',
     type: 'variable',
     apply: applyCompletion('priority:: ', 11),
-    boost: 1
+    boost: 0
   }
 ]
 

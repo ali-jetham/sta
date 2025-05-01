@@ -38,7 +38,7 @@ function getFileTree(event, dir = getWorkSpacePath()) {
   })
 }
 
-// Return HTML of a markdown file.
+// Return RAW markdown file.
 function openFile(event, path) {
   log.debug(`[openFile] with ${path}`)
   fs.readFile(path, 'utf-8', (err, data) => {
@@ -48,6 +48,7 @@ function openFile(event, path) {
     }
     log.verbose(data)
     event.sender.send('MainView:openFile', { data, path })
+    return { data, path }
   })
 }
 

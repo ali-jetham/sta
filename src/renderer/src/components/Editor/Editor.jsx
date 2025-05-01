@@ -2,7 +2,7 @@ import styles from './Editor.module.css'
 import { useState, useCallback, useEffect } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { EditorView } from '@uiw/react-codemirror'
-import { autocompletion, completeFromList, startCompletion } from '@codemirror/autocomplete'
+import { autocompletion } from '@codemirror/autocomplete'
 import { markdown, markdownLanguage, markdownKeymap } from '@codemirror/lang-markdown'
 import { nord } from '@uiw/codemirror-theme-nord'
 import {
@@ -13,6 +13,7 @@ import {
 
 export default function Editor({ fileContent, onFileChange }) {
   const [fontSize, setFontSize] = useState(11)
+
   const onChange = useCallback((val, viewUpdate) => {
     onFileChange(val)
   }, [])
