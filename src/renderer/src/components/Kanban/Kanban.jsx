@@ -1,8 +1,12 @@
-import { useState } from 'react'
 import styles from './Kanban.module.css'
+import { useState, useEffect } from 'react'
+import { createRendererLogger } from '../../utils/logger.js'
+import { useKanban } from '../../hooks/useKanban.js'
+
+const log = createRendererLogger('Kanban')
 
 export default function Kanban({ fileContent }) {
-  const [content, setContent] = useState(fileContent)
+  const kanban = useKanban(fileContent)
 
   return (
     <div className={styles.kanbanContainer}>

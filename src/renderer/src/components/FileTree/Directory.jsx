@@ -44,7 +44,7 @@ export default function Directory({ name, path, setTree }) {
               }
               return item
             })
-            log.verbose(`updatedTree: ${JSON.stringify(updatedTree, null, 2)}`)
+            // log.verbose(`updatedTree: ${JSON.stringify(updatedTree, null, 2)}`)
             return updatedTree
           })
         })
@@ -56,11 +56,7 @@ export default function Directory({ name, path, setTree }) {
 
   return (
     <div className={styles.directoryContainer}>
-      <div
-        className={styles.directory}
-        onClick={handleDirClick}
-        onContextMenu={handleContextMenu}
-      >
+      <div className={styles.directory} onClick={handleDirClick} onContextMenu={handleContextMenu}>
         {collapsed ? <Folder size={16} /> : <FolderOpen size={16} />}
         <span className={styles.dirName}>{name}</span>
       </div>
@@ -71,11 +67,7 @@ export default function Directory({ name, path, setTree }) {
           <div className={styles.children}>
             {children.map((child) =>
               child.type === 'directory' ? (
-                <Directory
-                  name={child.name}
-                  path={child.path}
-                  setTree={setTree}
-                />
+                <Directory name={child.name} path={child.path} setTree={setTree} />
               ) : (
                 <File fileName={child.name} path={child.path} />
               )
@@ -83,11 +75,7 @@ export default function Directory({ name, path, setTree }) {
           </div>
         </div>
       )}
-      <ContextMenu
-        ref={createMenuRef}
-        active={showCreateMenu}
-        menuPosition={menuPosition}
-      />
+      <ContextMenu ref={createMenuRef} active={showCreateMenu} menuPosition={menuPosition} />
 
       {/* {showCreateMenu &&
         createPortal(

@@ -32,7 +32,7 @@ function getFileTree(event, dir = getWorkSpacePath()) {
           children: []
         }
       })
-      log.verbose(`[getFileTree] files: ${JSON.stringify(fileTree, null, 2)}`)
+      // log.verbose(`[getFileTree] files: ${JSON.stringify(fileTree, null, 2)}`)
       resolve(fileTree)
     })
   })

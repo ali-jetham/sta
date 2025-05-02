@@ -14,7 +14,7 @@ export default function MainView() {
   const prevFileRef = useRef()
 
   window.electron.ipcRenderer.on('MainView:openFile', (event, { data, path }) => {
-    log.debug(`[MainView:openFile.on] ${path} with data ${data}`)
+    // log.verbose(`[MainView:openFile.on] ${path} with data ${data}`)
     if (!data || !path) {
       log.error([`[MainView:openFile.on] data: ${data} path: ${path}`])
     } else {
@@ -30,7 +30,7 @@ export default function MainView() {
 
   function saveFile() {
     log.debug(`[saveFile] called`)
-    log.info(`[saveFile] file changed, saving ${file} with ${filePath}`)
+    // log.verbose(`[saveFile] file changed, saving ${file} with ${filePath}`)
     if (file !== prevFileRef) {
       window.electron.ipcRenderer.invoke('file:saveFile', file, filePath)
     }
