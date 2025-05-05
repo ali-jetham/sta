@@ -41,7 +41,9 @@ export default function MainView() {
       <MainHeader view={view} setView={setView} saveFile={saveFile} />
 
       {view === 'kanban' ? <Kanban fileContent={file} /> : null}
-      {view === 'editor' ? <Editor fileContent={file} onFileChange={onFileChange} /> : null}
+      {view === 'editor' ? (
+        <Editor highlightLine={true} fileContent={file} onFileChange={onFileChange} />
+      ) : null}
     </div>
   )
 }

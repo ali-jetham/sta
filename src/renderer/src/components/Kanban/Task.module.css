@@ -1,13 +1,18 @@
 .taskContainer {
   display: flex;
-  padding: 0.2rem;
+  padding: .4rem;
   gap: 0.4rem;
   align-items: flex-start;
   border-radius: 0.4rem;
   border: 1px solid var(--secondary-border-color);
-  background-color: var(--secondary-bg-color);
+  background-color: var(--primary-bg-color);
   width: 100%;
   overflow: hidden;
+}
+
+.mainContent {
+  width: 100%;
+  height: 100%;
 }
 
 .mainText {

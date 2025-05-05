@@ -1,6 +1,6 @@
 .listContainer {
-  min-width: 15rem;
-  max-width: 15rem;
+  min-width: 18rem;
+  max-width: 18rem;
   border: 1px solid var(--border-color);
   border-radius: .4rem;
   height: fit-content;

@@ -1,5 +1,4 @@
 import styles from './Kanban.module.css'
-import { useState, useEffect } from 'react'
 import { createRendererLogger } from '../../utils/logger.js'
 import { useKanban } from '../../hooks/useKanban.js'
 import List from './List.jsx'

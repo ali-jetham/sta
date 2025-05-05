@@ -11,7 +11,7 @@ import {
   priorityAutoCompletions
 } from '../../utils/markdownCompletions'
 
-export default function Editor({ fileContent, onFileChange }) {
+export default function Editor({ fileContent, onFileChange, highlightLine }) {
   const [fontSize, setFontSize] = useState(11)
 
   const onChange = useCallback((val, viewUpdate) => {
@@ -50,7 +50,7 @@ export default function Editor({ fileContent, onFileChange }) {
           highlightActiveLineGutter: false,
           closeBrackets: true,
           tabSize: 4,
-          highlightActiveLine: true,
+          highlightActiveLine: highlightLine,
           history: true,
           defaultKeymap: true
         }}
