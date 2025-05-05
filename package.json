@@ -27,6 +27,7 @@
     "@uiw/codemirror-theme-nord": "^4.23.11",
     "@uiw/react-codemirror": "^4.23.11",
     "chokidar": "^4.0.3",
+    "clsx": "^2.1.1",
     "electron-log": "^5.3.3",
     "lucide-react": "^0.488.0",
     "react": "^19.1.0",

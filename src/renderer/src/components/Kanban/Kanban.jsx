@@ -2,28 +2,18 @@ import styles from './Kanban.module.css'
 import { useState, useEffect } from 'react'
 import { createRendererLogger } from '../../utils/logger.js'
 import { useKanban } from '../../hooks/useKanban.js'
+import List from './List.jsx'
 
 const log = createRendererLogger('Kanban')
 
 export default function Kanban({ fileContent }) {
   const kanban = useKanban(fileContent)
 
-  return (
-    <div className={styles.kanbanContainer}>
-      <List />
-      <List />
-      <List />
-      <List />
-    </div>
-  )
-}
+  if (!kanban) {
+    return
+  }
 
-function List() {
-  const [cards, setCards] = useState()
+  const listEl = kanban.map((list) => <List name={list.listName} tasks={list.tasks} />)
 
-  return <div>List</div>
-}
-
-function Card() {
-  return <div>Card</div>
+  return <div className={styles.kanbanContainer}>{listEl}</div>
 }

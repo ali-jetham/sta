@@ -48,6 +48,14 @@
   --secondary-bg-color: var(--nord1);
 
   --border-color: var(--nord2);
+  --secondary-border-color: var(--nord3);
+
+  --ui-accent-1: var(--nord3);
+  --ui-accent-2: var(--nord9);
+  --ui-accent-3: var(--nord10);
+  --ui-accent-high: var(--nord11);
+  --ui-accent-medium: var(--nord13);
+  --ui-accent-low: var(--nord14);
 
   --font-primary-color: var(--nord4);
   --font-secondary-color: var(--nord5);

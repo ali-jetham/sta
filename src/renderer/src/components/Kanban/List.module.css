@@ -1,0 +1,26 @@
+.listContainer {
+  min-width: 15rem;
+  max-width: 15rem;
+  border: 1px solid var(--border-color);
+  border-radius: .4rem;
+  height: fit-content;
+  padding: .4rem;
+}
+
+.listContainer:first-child {
+  margin-left: auto;
+}
+
+.listContainer:last-child {
+  margin-right: auto;
+}
+
+.headingContainer {
+  padding-bottom: 1rem;
+}
+
+.tasksContainer {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}

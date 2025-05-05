@@ -1,0 +1,68 @@
+.taskContainer {
+  display: flex;
+  padding: 0.2rem;
+  gap: 0.4rem;
+  align-items: flex-start;
+  border-radius: 0.4rem;
+  border: 1px solid var(--secondary-border-color);
+  background-color: var(--secondary-bg-color);
+  width: 100%;
+  overflow: hidden;
+}
+
+.mainText {
+  /* fixes the vertical alignment issue with checkbox */
+  line-height: 1.2;
+}
+
+.metadata {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: .8rem;
+  gap: .4rem;
+  padding-top: .4rem;
+}
+
+.metadata span {
+  padding: .1rem;
+}
+
+.metadataKey {
+  background-color: var(--ui-accent-1);
+  border-top-left-radius: .2rem;
+  border-bottom-left-radius: .2rem;
+}
+
+.metadataValue {
+  background-color: var(--ui-accent-3);
+  border-top-right-radius: .2rem;
+  border-bottom-right-radius: .2rem;
+}
+
+.priorityHigh {
+  background-color: var(--ui-accent-high);
+}
+
+.priorityMedium {
+  background-color: var(--ui-accent-medium);
+}
+
+.priorityLow {
+  background-color: var(--ui-accent-low);
+}
+
+.done {
+  background-color: var(--ui-accent-low);
+}
+
+.dueClose {
+  background-color: var(--ui-accent-high);
+}
+
+.dueMedium {
+  background-color: var(--ui-accent-low);
+}
+
+.dueNormal {
+  background-color: var(--ui-accent-3);
+}
