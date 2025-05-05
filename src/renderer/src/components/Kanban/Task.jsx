@@ -3,24 +3,23 @@ import { Square, SquareCheckBig, SquareSlash, X } from 'lucide-react'
 import clsx from 'clsx'
 import { useState } from 'react'
 import Editor from '../Editor/Editor'
-import { taskToMarkdown } from '../../utils/markdownParser'
 import { createRendererLogger } from '../../utils/logger'
 
 const log = createRendererLogger('Task')
 
-export default function Task({ task, updateTask }) {
+export default function Task({ listId, task, updateTask, updateStatus }) {
   const [isEditing, setIsEditing] = useState(false)
   const [content, setContent] = useState(task.mainText)
 
   function handleDoubleClick() {
     setIsEditing(true)
-    setContent(taskToMarkdown(task, true))
   }
 
   function onEnterDown(e) {
-    if (e.key === 'Enter') {
+    if (e.ctrlKey && e.key === 'Enter') {
       setIsEditing(false)
-      updateTask(content, task.id)
+      log.debug(`[onEnterDown] with taskId: ${task.id}`)
+      updateTask(content, listId, task.id)
     }
   }
 
@@ -28,15 +27,25 @@ export default function Task({ task, updateTask }) {
     setContent(newContent)
   }
 
+  function onStatusClick() {
+    updateStatus(task.status, listId, task.id)
+  }
+
   return (
     <div className={styles.taskContainer}>
       <div className={styles.status}>
         {task.status === 'x' || task.status === 'X' ? (
-          <SquareCheckBig size={16} />
+          <button className={styles.statusButton} onClick={onStatusClick}>
+            <SquareCheckBig size={16} />
+          </button>
         ) : task.status === '/' ? (
-          <SquareSlash size={16} />
+          <button className={styles.statusButton} onClick={onStatusClick}>
+            <SquareSlash size={16} />
+          </button>
         ) : (
-          <Square size={16} />
+          <button className={styles.statusButton} onClick={onStatusClick}>
+            <Square size={16} />
+          </button>
         )}
       </div>
 
@@ -100,7 +109,7 @@ export default function Task({ task, updateTask }) {
 
       {isEditing && (
         <button onClick={() => setIsEditing(false)} className={styles.editingCloseButton}>
-          <X />
+          <X size={16} />
         </button>
       )}
     </div>

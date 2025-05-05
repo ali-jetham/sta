@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { createRendererLogger } from '../utils/logger.js'
-import { start } from 'react-scan/dist/index'
-import { Regex } from 'lucide-react'
+import { parseTaskLine } from '../utils/markdownParser.js'
 
 const log = createRendererLogger('useKanban')
 
@@ -29,38 +28,48 @@ export function useKanban(fileContent) {
     setKanban(newKanban)
   }, [fileContent])
 
-  function updateTask(taskString, id) {
-    log.debug(`[updatedTask] called for id: ${id}`)
-    setKanban()
+  function updateTask(taskString, listId, taskId) {
+    log.debug(`[updatedTask] called for id: ${taskId} status: ${status} taskLine: ${taskString}`)
+    const newTask = parseTaskLine(taskString, taskId)
+    log.verbose(`[updateTask] ${JSON.stringify(newTask, null, 2)}`)
+
+    setKanban((prevKanban) => {
+      return prevKanban.map((list) => {
+        if (list.id === listId) {
+          return {
+            ...list,
+            tasks: list.tasks.map((task) => {
+              if (task.id === taskId) {
+                return { ...newTask }
+              }
+              return task
+            })
+          }
+        }
+        return list
+      })
+    })
+  }
+
+  function updateStatus(status, listId, taskId) {
+    log.debug(`[switchStatus] called`)
+    const newStatus = status === '' ? '/' : status === '/' ? 'x' : ''
+    log.info(`[updatedTask] newStatus: ${newStatus}`)
+
+    setKanban((prevKanban) => {
+      return prevKanban.map((list) =>
+        list.id === listId
+          ? {
+              ...list,
+              tasks: list.tasks.map((task) =>
+                task.id === taskId ? { ...task, status: newStatus } : task
+              )
+            }
+          : list
+      )
+    })
   }
 
   log.verbose(`Kanban is ${JSON.stringify(kanban, null, 2)}`)
-  return { kanban, updateTask }
-}
-
-function parseTaskLine(line, id) {
-  let match
-  const status = line.match(/\[\s*([xX\/ ])\s*\]/)[1].trim()
-  const mainText = line.match(/^\s*[-+*]\s+\[.\]\s+(.*?)(?=\s*\[\w+::|$)/)[1].trim()
-  match = line.match(/\[priority:: (\w{3,6})/)
-  const priority = match ? match[1] : ''
-  match = line.match(/\[start:: (\d{4}-\d{2}-\d{2})]/)
-  const start = match ? match[1] : ''
-  match = line.match(/\[due:: (\d{4}-\d{2}-\d{2})]/)
-  const due = match ? match[1] : ''
-  match = line.match(/\[done:: (\d{4}-\d{2}-\d{2})]/)
-  const done = match ? match[1] : ''
-  match = line.match(/\[created:: (\d{4}-\d{2}-\d{2})]/)
-  const created = match ? match[1] : ''
-
-  return {
-    id: id,
-    status: status,
-    mainText,
-    priority,
-    start,
-    due,
-    done,
-    created
-  }
+  return { kanban, updateTask, updateStatus }
 }

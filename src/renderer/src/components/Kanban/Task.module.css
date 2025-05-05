@@ -75,3 +75,7 @@
 .editingCloseButton {
   all: unset;
 }
+
+.statusButton {
+  all: unset
+}
