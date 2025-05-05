@@ -42,7 +42,12 @@ export default function MainView() {
 
       {view === 'kanban' ? <Kanban fileContent={file} /> : null}
       {view === 'editor' ? (
-        <Editor highlightLine={true} fileContent={file} onFileChange={onFileChange} />
+        <Editor
+          content={file}
+          onContentChange={onFileChange}
+          highlightLine={true}
+          fontSizeProp={11}
+        />
       ) : null}
     </div>
   )

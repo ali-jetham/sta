@@ -1,17 +1,31 @@
 import styles from './Task.module.css'
-import { Circle, Square, SquareCheck, SquareCheckBig, SquareSlash } from 'lucide-react'
+import { Square, SquareCheckBig, SquareSlash, X } from 'lucide-react'
 import clsx from 'clsx'
 import { useState } from 'react'
 import Editor from '../Editor/Editor'
 import { taskToMarkdown } from '../../utils/markdownParser'
+import { createRendererLogger } from '../../utils/logger'
 
-export default function Task({ task }) {
+const log = createRendererLogger('Task')
+
+export default function Task({ task, updateTask }) {
   const [isEditing, setIsEditing] = useState(false)
-  const [content, setContent] = useState()
+  const [content, setContent] = useState(task.mainText)
 
   function handleDoubleClick() {
     setIsEditing(true)
     setContent(taskToMarkdown(task, true))
+  }
+
+  function onEnterDown(e) {
+    if (e.key === 'Enter') {
+      setIsEditing(false)
+      updateTask(content, task.id)
+    }
+  }
+
+  function onContentChange(newContent) {
+    setContent(newContent)
   }
 
   return (
@@ -26,7 +40,16 @@ export default function Task({ task }) {
         )}
       </div>
 
-      {isEditing && <Editor highlightLine={false} fileContent={content} />}
+      {isEditing && (
+        <Editor
+          content={content}
+          onContentChange={onContentChange}
+          onKeyDown={onEnterDown}
+          fontSizeProp={9}
+          highlightLine={false}
+          foldGutterProp={false}
+        />
+      )}
 
       {!isEditing && (
         <div className={styles.mainContent} onDoubleClick={handleDoubleClick}>
@@ -37,9 +60,9 @@ export default function Task({ task }) {
                 <span className={styles.metadataKey}>priority</span>
                 <span
                   className={clsx(styles.metadataValue, {
-                    [styles.priorityHigh]: priority === 'high',
-                    [styles.priorityMedium]: priority === 'medium',
-                    [styles.priorityLow]: priority === 'low'
+                    [styles.priorityHigh]: task.priority === 'high',
+                    [styles.priorityMedium]: task.priority === 'medium',
+                    [styles.priorityLow]: task.priority === 'low'
                   })}
                 >
                   {task.priority}
@@ -73,6 +96,12 @@ export default function Task({ task }) {
             )}
           </div>
         </div>
+      )}
+
+      {isEditing && (
+        <button onClick={() => setIsEditing(false)} className={styles.editingCloseButton}>
+          <X />
+        </button>
       )}
     </div>
   )

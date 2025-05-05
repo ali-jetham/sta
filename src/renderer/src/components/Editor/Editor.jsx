@@ -11,18 +11,26 @@ import {
   priorityAutoCompletions
 } from '../../utils/markdownCompletions'
 
-export default function Editor({ fileContent, onFileChange, highlightLine }) {
-  const [fontSize, setFontSize] = useState(11)
+export default function Editor({
+  content,
+  onContentChange,
+  highlightLine,
+  fontSizeProp,
+  foldGutterProp = true,
+  onKeyDown
+}) {
+  const [fontSize, setFontSize] = useState(fontSizeProp)
 
   const onChange = useCallback((val, viewUpdate) => {
-    onFileChange(val)
+    onContentChange(val)
   }, [])
 
   return (
     <div className={styles.editorContainer}>
       <CodeMirror
-        value={fileContent}
+        value={content}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         theme={nord}
         autoFocus={true}
         extensions={[
@@ -46,7 +54,7 @@ export default function Editor({ fileContent, onFileChange, highlightLine }) {
         basicSetup={{
           autocompletion: true,
           lineNumbers: false,
-          foldGutter: true,
+          foldGutter: foldGutterProp,
           highlightActiveLineGutter: false,
           closeBrackets: true,
           tabSize: 4,

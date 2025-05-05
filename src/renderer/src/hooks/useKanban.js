@@ -23,38 +23,38 @@ export function useKanban(fileContent) {
         newKanban.push(newList)
         currentList = newList
       } else if (regex.test(lines[i]) && currentList) {
-        currentList.tasks.push(parseTaskLine(lines[i]))
+        currentList.tasks.push(parseTaskLine(lines[i], i))
       }
     }
     setKanban(newKanban)
   }, [fileContent])
 
+  function updateTask(taskString, id) {
+    log.debug(`[updatedTask] called for id: ${id}`)
+    setKanban()
+  }
+
   log.verbose(`Kanban is ${JSON.stringify(kanban, null, 2)}`)
-  return kanban
+  return { kanban, updateTask }
 }
 
-function parseTaskLine(line) {
+function parseTaskLine(line, id) {
   let match
   const status = line.match(/\[\s*([xX\/ ])\s*\]/)[1].trim()
   const mainText = line.match(/^\s*[-+*]\s+\[.\]\s+(.*?)(?=\s*\[\w+::|$)/)[1].trim()
-
   match = line.match(/\[priority:: (\w{3,6})/)
   const priority = match ? match[1] : ''
-
   match = line.match(/\[start:: (\d{4}-\d{2}-\d{2})]/)
   const start = match ? match[1] : ''
-
   match = line.match(/\[due:: (\d{4}-\d{2}-\d{2})]/)
   const due = match ? match[1] : ''
-
   match = line.match(/\[done:: (\d{4}-\d{2}-\d{2})]/)
   const done = match ? match[1] : ''
-
   match = line.match(/\[created:: (\d{4}-\d{2}-\d{2})]/)
   const created = match ? match[1] : ''
 
   return {
-    id: '',
+    id: id,
     status: status,
     mainText,
     priority,

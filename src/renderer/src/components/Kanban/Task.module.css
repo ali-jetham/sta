@@ -6,8 +6,8 @@
   border-radius: 0.4rem;
   border: 1px solid var(--secondary-border-color);
   background-color: var(--primary-bg-color);
-  width: 100%;
   overflow: hidden;
+  width: 100%;
 }
 
 .mainContent {
@@ -70,4 +70,8 @@
 
 .dueNormal {
   background-color: var(--ui-accent-3);
+}
+
+.editingCloseButton {
+  all: unset;
 }

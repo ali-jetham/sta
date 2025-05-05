@@ -1,8 +1,8 @@
 import styles from './List.module.css'
 import Task from './Task'
 
-export default function List({ name, tasks }) {
-  const tasksEl = tasks.map((task) => <Task task={task} />)
+export default function List({ name, tasks, updateTask }) {
+  const tasksEl = tasks.map((task) => <Task task={task} updateTask={updateTask} />)
 
   return (
     <div className={styles.listContainer}>
