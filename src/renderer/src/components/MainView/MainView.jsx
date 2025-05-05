@@ -24,10 +24,6 @@ export default function MainView() {
     }
   })
 
-  function onFileChange(value) {
-    setFile(value)
-  }
-
   function saveFile() {
     log.debug(`[saveFile] called`)
     // log.verbose(`[saveFile] file changed, saving ${file} with ${filePath}`)
@@ -40,11 +36,17 @@ export default function MainView() {
     <div className={`${styles.mainViewContainer} noselect`}>
       <MainHeader view={view} setView={setView} saveFile={saveFile} />
 
-      {view === 'kanban' ? <Kanban fileContent={file} /> : null}
-      {view === 'editor' ? (
+      {!file && (
+        <>
+          <h1>Open a file</h1>
+        </>
+      )}
+
+      {file && view === 'kanban' ? <Kanban fileContent={file} setFile={setFile} /> : null}
+      {file && view === 'editor' ? (
         <Editor
           content={file}
-          onContentChange={onFileChange}
+          onContentChange={setFile}
           highlightLine={true}
           fontSizeProp={11}
         />

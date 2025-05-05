@@ -2,6 +2,7 @@ import { createRendererLogger } from './logger'
 
 const log = createRendererLogger('markdownParser')
 
+// TODO: optimize/simplify this function
 export function parseTaskLine(taskLine, id) {
   let match
   let mainText = ''
@@ -62,35 +63,31 @@ export function parseTaskLine(taskLine, id) {
   }
 }
 
-// export function parseTaskLine(taskLine, id) {
-//   let match
+export function kanbanToMarkdown(kanban) {
+  log.info(`[kanbanToMarkdown] called`)
+  let rawMd = String.raw``
+  let first = false
 
-//   const mainText = taskLine.match(/^\s*[-+*]\s+\[.\]\s+(.*?)(?=\s*\[\w+::|$)/)[1].trim()
-//   const status = taskLine.match(/\[\s*([xX\/ ])\s*\]/)[1].trim()
+  kanban.forEach((list) => {
+    if (!first) {
+      first = true
+      rawMd += `## ${list.listName}\n\n`
+    } else {
+      rawMd += `\n\n## ${list.listName}\n\n`
+    }
+    list.tasks.forEach((task) => {
+      const status = task.status === '' ? ' ' : task.status
+      const priority = task.priority ? ` [priority:: ${task.priority}]` : ''
+      const start = task.start ? ` [start:: ${task.start}]` : ''
+      const due = task.due ? ` [due:: ${task.due}]` : ''
+      const done = task.done ? ` [done:: ${task.done}]` : ''
+      const created = task.created ? ` [created:: ${task.created}]` : ''
 
-//   match = taskLine.match(/\[priority:: (\w{3,6})/)
-//   const priority = match ? match[1] : ''
+      rawMd +=
+        `- [${status}] ${task.mainText}${priority}${start}${due}${done}${created}`.trimEnd() +
+        '\n'
+    })
+  })
 
-//   match = taskLine.match(/\[start:: (\d{4}-\d{2}-\d{2})]/)
-//   const start = match ? match[1] : ''
-
-//   match = taskLine.match(/\[due:: (\d{4}-\d{2}-\d{2})]/)
-//   const due = match ? match[1] : ''
-
-//   match = taskLine.match(/\[done:: (\d{4}-\d{2}-\d{2})]/)
-//   const done = match ? match[1] : ''
-
-//   match = taskLine.match(/\[created:: (\d{4}-\d{2}-\d{2})]/)
-//   const created = match ? match[1] : ''
-
-//   return {
-//     id: id,
-//     status,
-//     mainText,
-//     priority,
-//     start,
-//     due,
-//     done,
-//     created
-//   }
-// }
+  return rawMd
+}

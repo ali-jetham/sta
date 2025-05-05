@@ -5,8 +5,11 @@ import List from './List.jsx'
 
 const log = createRendererLogger('Kanban')
 
-export default function Kanban({ fileContent }) {
-  const { kanban, updateTask, updateStatus } = useKanban(fileContent)
+export default function Kanban({ fileContent, setFile }) {
+  const { kanban, updateTask, updateStatus, getMarkdown } = useKanban(
+    fileContent,
+    setFile
+  )
 
   if (!kanban) {
     return

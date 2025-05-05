@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { createRendererLogger } from '../utils/logger.js'
-import { parseTaskLine } from '../utils/markdownParser.js'
+import { parseTaskLine, kanbanToMarkdown } from '../utils/markdownParser.js'
 
 const log = createRendererLogger('useKanban')
 
-export function useKanban(fileContent) {
+export function useKanban(fileContent, setFile) {
   const [kanban, setKanban] = useState([])
 
   useEffect(() => {
@@ -29,7 +29,9 @@ export function useKanban(fileContent) {
   }, [fileContent])
 
   function updateTask(taskString, listId, taskId) {
-    log.debug(`[updatedTask] called for id: ${taskId} status: ${status} taskLine: ${taskString}`)
+    log.debug(
+      `[updatedTask] called for id: ${taskId} status: ${status} taskLine: ${taskString}`
+    )
     const newTask = parseTaskLine(taskString, taskId)
     log.verbose(`[updateTask] ${JSON.stringify(newTask, null, 2)}`)
 
@@ -49,6 +51,7 @@ export function useKanban(fileContent) {
         return list
       })
     })
+    setFile(kanbanToMarkdown(kanban))
   }
 
   function updateStatus(status, listId, taskId) {
@@ -68,8 +71,13 @@ export function useKanban(fileContent) {
           : list
       )
     })
+    setFile(kanbanToMarkdown(kanban))
   }
 
-  log.verbose(`Kanban is ${JSON.stringify(kanban, null, 2)}`)
-  return { kanban, updateTask, updateStatus }
+  function getMarkdown() {
+    return kanbanToMarkdown(kanban)
+  }
+
+  // log.verbose(`Kanban is ${JSON.stringify(kanban, null, 2)}`)
+  return { kanban, updateTask, updateStatus, getMarkdown }
 }
