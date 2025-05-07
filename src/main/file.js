@@ -33,8 +33,10 @@ function getFileTree(event, dir = getWorkSpacePath()) {
           children: []
         }
       })
+      const workspaceName = path.basename(getWorkSpacePath())
+      const workspacePath = getWorkSpacePath()
       // log.verbose(`[getFileTree] files: ${JSON.stringify(fileTree, null, 2)}`)
-      resolve(fileTree)
+      resolve({ fileTree, workspaceName, workspacePath })
     })
   })
 }

@@ -18,7 +18,7 @@ export default function MainView() {
     'MainView:openFile',
     (event, { data, filePath, fileName }) => {
       // log.verbose(`[MainView:openFile.on] ${path} with data ${data}`)
-      if (!data || !filePath) {
+      if (!filePath) {
         log.error([`[MainView:openFile.on] data: ${data} path: ${filePath}`])
       } else {
         setFile(data)
@@ -41,16 +41,16 @@ export default function MainView() {
     <div className={`${styles.mainViewContainer} noselect`}>
       <MainHeader fileName={fileName} view={view} setView={setView} saveFile={saveFile} />
 
-      {!file && (
+      {file === null && (
         <>
           <h1>Open a file</h1>
         </>
       )}
 
-      {file && view === 'kanban' ? (
+      {view === 'kanban' ? (
         <Kanban fileContent={file} setFile={setFile} saveFile={saveFile} />
       ) : null}
-      {file && view === 'editor' ? (
+      {view === 'editor' ? (
         <Editor
           content={file}
           onContentChange={setFile}

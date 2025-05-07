@@ -1,4 +1,4 @@
-import { forwardRef, useRef, useImperativeHandle } from 'react'
+import { forwardRef, useRef, useImperativeHandle, useState } from 'react'
 import { createRendererLogger } from '../../utils/logger'
 import styles from './FileContextMenu.module.css'
 
@@ -9,6 +9,7 @@ const log = createRendererLogger('FileContextMenu')
 const FileContextMenu = forwardRef((props, ref) => {
   const { active, menuPosition, dirPath } = props
   const menuRef = useRef(null)
+  const [showNameField, setShowNameField] = useState(false)
 
   useImperativeHandle(ref, () => {
     return menuRef.current
@@ -30,6 +31,8 @@ const FileContextMenu = forwardRef((props, ref) => {
         New File
       </button>
       <button className={styles.buttons}>Delete</button>
+
+      {showNameField && <textarea name="" id=""></textarea>}
     </div>
   )
 })

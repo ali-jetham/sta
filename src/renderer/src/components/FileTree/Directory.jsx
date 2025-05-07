@@ -12,7 +12,7 @@ const log = createRendererLogger('Directory')
 export default function Directory({ name, path, setTree }) {
   const [collapsed, setCollapsed] = useState(true)
   const [firstClick, setFirstClick] = useState(false)
-  const [children, setChildren] = useState(null)
+  const [children, setChildren] = useState([])
   const [showCreateMenu, setShowCreateMenu] = useState(false)
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 300 })
   const createMenuRef = useRef(null)
@@ -34,13 +34,12 @@ export default function Directory({ name, path, setTree }) {
       log.info('[handleDirClick] first click set to true')
       window.electron.ipcRenderer
         .invoke('file:getTree', path)
-        .then((response) => {
-          log.info('[handleDirClick] then response')
-          setChildren(response)
+        .then(({ fileTree }) => {
+          setChildren(fileTree)
           setTree((prevTree) => {
             const updatedTree = prevTree.map((item) => {
               if (item.path === path && item.type === 'directory') {
-                return { ...item, children: response }
+                return { ...item, children: fileTree }
               }
               return item
             })

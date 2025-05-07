@@ -7,14 +7,20 @@ import File from './File'
 
 const log = createRendererLogger('FileTree')
 
-export default function FileTree(props) {
-  const workSpacePath = useState()
+export default function FileTree() {
+  const [workspace, setWorkspace] = useState()
+  const [workspacePath, setWorkspacePath] = useState()
+
   const [tree, setTree] = useState(null)
 
   useEffect(() => {
     window.electron.ipcRenderer
       .invoke('file:getTree')
-      .then((response) => setTree(response))
+      .then(({ fileTree, workspaceName, workspacePath }) => {
+        setWorkspace(workspaceName)
+        setWorkspacePath(workspacePath)
+        setTree(fileTree)
+      })
       .catch((error) => log.error(`Failed to get file tree ${error}`))
   }, [])
 
@@ -22,16 +28,6 @@ export default function FileTree(props) {
     return
   }
   log.info(`tree: ${JSON.stringify(tree, null, 2)}`)
-
-  const directories = tree.filter((file) => file.type === 'directory')
-  const directoryEl = directories.map((dir) => (
-    <Directory name={dir.name} path={dir.path} setTree={setTree} />
-  ))
-
-  const files = tree.filter((file) => file.type === 'file')
-  const filesEl = files.map((file) => (
-    <File fileName={file.name} path={file.path} />
-  ))
 
   return (
     <div className={`${styles.fileTreeContainer} noselect`}>
@@ -42,8 +38,7 @@ export default function FileTree(props) {
         </button>
       </div>
 
-      {directoryEl}
-      {filesEl}
+      <Directory name={workspace} path={workspacePath} setTree={setTree} />
     </div>
   )
 }
