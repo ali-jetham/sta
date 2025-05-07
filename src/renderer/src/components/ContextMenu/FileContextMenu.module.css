@@ -12,3 +12,15 @@
 .active {
     visibility: visible;
 }
+
+.buttons {
+    all: unset;
+    display: block;
+    border-radius: .4rem;
+    padding: .2rem;
+    width: 100%;
+}
+
+.buttons:hover {
+    background-color: var(--ui-accent-1);
+}
