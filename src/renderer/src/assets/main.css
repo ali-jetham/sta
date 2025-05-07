@@ -116,9 +116,30 @@ body {
   height: 100%;
 }
 
-.cm-scroller {
+/* .cm-scroller {
   scrollbar-color: var(--border-color) var(--primary-bg-color);
+} */
+
+*::-webkit-scrollbar {
+  scrollbar-width: thin;
 }
+
+*::-webkit-scrollbar-track {
+  background-color: var(--primary-bg-color);
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 10px;
+  border: 2px solid var(--primary-bg-color);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--secondary-border-color);
+}
+
+
 
 .cm-editor.cm-focused {
   outline: none;

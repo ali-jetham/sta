@@ -4,7 +4,7 @@ import { parseTaskLine, kanbanToMarkdown } from '../utils/markdownParser.js'
 
 const log = createRendererLogger('useKanban')
 
-export function useKanban(fileContent, setFile) {
+export function useKanban(fileContent, setFile, saveFile) {
   const [kanban, setKanban] = useState([])
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export function useKanban(fileContent, setFile) {
     log.info(`[updatedTask] newStatus: ${newStatus}`)
 
     setKanban((prevKanban) => {
-      return prevKanban.map((list) =>
+      const updatedKanban = prevKanban.map((list) =>
         list.id === listId
           ? {
               ...list,
@@ -70,14 +70,31 @@ export function useKanban(fileContent, setFile) {
             }
           : list
       )
+      setFile(kanbanToMarkdown(updatedKanban))
+      return updatedKanban
     })
-    setFile(kanbanToMarkdown(kanban))
+  }
+
+  function updateListName(listId, newName) {
+    log.info(`[updateListName] called with newName: ${newName}`)
+    setKanban((prevKanban) => {
+      const updatedkanban = prevKanban.map((list) =>
+        list.id === listId
+          ? {
+              ...list,
+              listName: newName
+            }
+          : list
+      )
+      setFile(kanbanToMarkdown(updatedkanban))
+      saveFile(kanbanToMarkdown(updatedkanban))
+      return updatedkanban
+    })
   }
 
   function getMarkdown() {
     return kanbanToMarkdown(kanban)
   }
 
-  // log.verbose(`Kanban is ${JSON.stringify(kanban, null, 2)}`)
-  return { kanban, updateTask, updateStatus, getMarkdown }
+  return { kanban, updateTask, updateStatus, updateListName }
 }

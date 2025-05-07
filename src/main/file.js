@@ -2,7 +2,7 @@ import { getWorkSpacePath } from './workspace'
 import { createLogger } from './logger'
 import { ipcMain } from 'electron'
 import fs from 'node:fs'
-import path, { resolve } from 'node:path'
+import path from 'node:path'
 
 const log = createLogger('file')
 
@@ -39,16 +39,17 @@ function getFileTree(event, dir = getWorkSpacePath()) {
 }
 
 // Return RAW markdown file.
-function openFile(event, path) {
-  log.debug(`[openFile] with ${path}`)
-  fs.readFile(path, 'utf-8', (err, data) => {
+function openFile(event, filePath) {
+  log.debug(`[openFile] with ${filePath}`)
+  fs.readFile(filePath, 'utf-8', (err, data) => {
     if (err) {
       log.error(`[openFile] ${err}`)
       return
     }
-    log.verbose(data)
-    event.sender.send('MainView:openFile', { data, path })
-    return { data, path }
+    // log.verbose(data)
+    const fileName = path.basename(filePath, '.md')
+    event.sender.send('MainView:openFile', { data, filePath, fileName })
+    return { data, filePath, fileName }
   })
 }
 

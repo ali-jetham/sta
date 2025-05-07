@@ -3,8 +3,6 @@ import styles from './MainHeader.module.css'
 import { KanbanSquare, SquarePlus, FileType2, Save } from 'lucide-react'
 
 export default function MainHeader(props) {
-  const [projectName, setProjectName] = useState('projectName')
-
   function handleViewSwitch() {
     if (props.view === 'kanban') {
       props.setView('editor')
@@ -15,7 +13,7 @@ export default function MainHeader(props) {
 
   return (
     <div className={styles.mainHeaderContainer}>
-      <p className={styles.projectName}>{projectName}</p>
+      <p className={styles.projectName}>{props.fileName}</p>
 
       <div className={styles.actionButtonsContainer}>
         <button className={styles.actionButton}>

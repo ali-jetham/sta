@@ -71,7 +71,7 @@ export function kanbanToMarkdown(kanban) {
   kanban.forEach((list) => {
     if (!first) {
       first = true
-      rawMd += `## ${list.listName}\n\n`
+      rawMd += `## ${list.listName.trimEnd()}\n\n`
     } else {
       rawMd += `\n\n## ${list.listName}\n\n`
     }

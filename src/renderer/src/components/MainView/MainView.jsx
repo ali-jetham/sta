@@ -11,18 +11,23 @@ export default function MainView() {
   const [view, setView] = useState('editor')
   const [file, setFile] = useState()
   const [filePath, setFilePath] = useState()
+  const [fileName, setFileName] = useState()
   const prevFileRef = useRef()
 
-  window.electron.ipcRenderer.on('MainView:openFile', (event, { data, path }) => {
-    // log.verbose(`[MainView:openFile.on] ${path} with data ${data}`)
-    if (!data || !path) {
-      log.error([`[MainView:openFile.on] data: ${data} path: ${path}`])
-    } else {
-      setFile(data)
-      setFilePath(path)
-      prevFileRef.current = data
+  window.electron.ipcRenderer.on(
+    'MainView:openFile',
+    (event, { data, filePath, fileName }) => {
+      // log.verbose(`[MainView:openFile.on] ${path} with data ${data}`)
+      if (!data || !filePath) {
+        log.error([`[MainView:openFile.on] data: ${data} path: ${filePath}`])
+      } else {
+        setFile(data)
+        setFilePath(filePath)
+        setFileName(fileName)
+        prevFileRef.current = data
+      }
     }
-  })
+  )
 
   function saveFile() {
     log.debug(`[saveFile] called`)
@@ -34,7 +39,7 @@ export default function MainView() {
 
   return (
     <div className={`${styles.mainViewContainer} noselect`}>
-      <MainHeader view={view} setView={setView} saveFile={saveFile} />
+      <MainHeader fileName={fileName} view={view} setView={setView} saveFile={saveFile} />
 
       {!file && (
         <>
@@ -42,7 +47,9 @@ export default function MainView() {
         </>
       )}
 
-      {file && view === 'kanban' ? <Kanban fileContent={file} setFile={setFile} /> : null}
+      {file && view === 'kanban' ? (
+        <Kanban fileContent={file} setFile={setFile} saveFile={saveFile} />
+      ) : null}
       {file && view === 'editor' ? (
         <Editor
           content={file}

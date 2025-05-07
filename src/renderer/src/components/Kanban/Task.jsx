@@ -28,6 +28,7 @@ export default function Task({ listId, task, updateTask, updateStatus }) {
   }
 
   function onStatusClick() {
+    log.debug(`[onStatusClick] with status: ${task.status}`)
     updateStatus(task.status, listId, task.id)
   }
 
@@ -94,7 +95,9 @@ export default function Task({ listId, task, updateTask, updateStatus }) {
             {task.done && (
               <div>
                 <span className={styles.metadataKey}>done</span>
-                <span className={clsx(styles.metadataValue, styles.done)}>{task.done}</span>
+                <span className={clsx(styles.metadataValue, styles.done)}>
+                  {task.done}
+                </span>
               </div>
             )}
             {task.created && (

@@ -5,18 +5,26 @@ import List from './List.jsx'
 
 const log = createRendererLogger('Kanban')
 
-export default function Kanban({ fileContent, setFile }) {
-  const { kanban, updateTask, updateStatus, getMarkdown } = useKanban(
+export default function Kanban({ fileContent, setFile, saveFile }) {
+  const { kanban, updateTask, updateStatus, updateListName } = useKanban(
     fileContent,
-    setFile
+    setFile,
+    saveFile
   )
 
   if (!kanban) {
     return
   }
 
+  log.verbose(`kanban is ${JSON.stringify(kanban, null, 2)}`)
+
   const listEl = kanban.map((list) => (
-    <List list={list} updateTask={updateTask} updateStatus={updateStatus} />
+    <List
+      list={list}
+      updateTask={updateTask}
+      updateStatus={updateStatus}
+      updateListName={updateListName}
+    />
   ))
 
   return <div className={styles.kanbanContainer}>{listEl}</div>

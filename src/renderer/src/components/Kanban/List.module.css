@@ -19,6 +19,28 @@
   padding-bottom: 1rem;
 }
 
+.headingContainer button {
+  all: unset;
+  display: flex;
+  align-items: center;
+}
+
+.headingContent {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headingContent input {
+  all: unset;
+  padding-top: .2rem;
+  background-color: var(--primary-bg-color);
+  font-size: 1rem;
+  font-weight: 700;
+  min-height: 1rem;
+  max-height: 1rem;
+
+}
+
 .tasksContainer {
   display: flex;
   flex-direction: column;
