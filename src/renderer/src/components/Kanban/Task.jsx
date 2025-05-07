@@ -4,12 +4,23 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import Editor from '../Editor/Editor'
 import { createRendererLogger } from '../../utils/logger'
+import { useDraggable, useDroppable } from '@dnd-kit/core'
 
 const log = createRendererLogger('Task')
 
 export default function Task({ listId, task, updateTask, updateStatus }) {
   const [isEditing, setIsEditing] = useState(false)
   const [content, setContent] = useState(task.mainText)
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: task.id,
+    data: { taskListId: listId }
+  })
+
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
+      }
+    : undefined
 
   function handleDoubleClick() {
     setIsEditing(true)
@@ -27,13 +38,20 @@ export default function Task({ listId, task, updateTask, updateStatus }) {
     setContent(newContent)
   }
 
-  function onStatusClick() {
+  function onStatusClick(e) {
+    e.stopPropagation()
     log.debug(`[onStatusClick] with status: ${task.status}`)
     updateStatus(task.status, listId, task.id)
   }
 
   return (
-    <div className={styles.taskContainer}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      className={styles.taskContainer}
+    >
       <div className={styles.status}>
         {task.status === 'x' || task.status === 'X' ? (
           <button className={styles.statusButton} onClick={onStatusClick}>

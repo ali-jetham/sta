@@ -1,15 +1,18 @@
-import { useState } from 'react'
 import styles from './List.module.css'
-import Task from './Task'
+import { useState } from 'react'
+import { useDroppable } from '@dnd-kit/core'
 import { EllipsisVertical, X } from 'lucide-react'
-import Editor from '../Editor/Editor'
 import { createRendererLogger } from '../../utils/logger'
+import Editor from '../Editor/Editor'
+import Task from './Task'
 
 const log = createRendererLogger('List')
 
 export default function List({ list, updateTask, updateStatus, updateListName }) {
   const [isEditing, setIsEditing] = useState(false)
   const [listName, setListName] = useState(list.listName)
+  const { isOver, setNodeRef } = useDroppable({ id: list.id })
+  // const style = { color: isOver ? 'green' : undefined }
 
   const tasksEl = list.tasks.map((task) => (
     <Task
@@ -36,7 +39,7 @@ export default function List({ list, updateTask, updateStatus, updateListName })
   }
 
   return (
-    <div className={styles.listContainer}>
+    <div ref={setNodeRef} className={styles.listContainer}>
       <div className={styles.headingContainer}>
         {isEditing && (
           <div className={styles.headingContent}>

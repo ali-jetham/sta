@@ -92,9 +92,38 @@ export function useKanban(fileContent, setFile, saveFile) {
     })
   }
 
+  function updateTaskList(taskId, taskListId, newListId) {
+    setKanban((prevKanban) => {
+      let taskToMove
+      const updatedKanban = prevKanban.map((list) => {
+        if (list.id === taskListId) {
+          const updatedTasks = list.tasks.filter((task) => {
+            if (task.id === taskId) {
+              taskToMove = task
+              return false
+            }
+            return true
+          })
+          return { ...list, tasks: updatedTasks }
+        }
+        return list
+      })
+
+      const finalKanban = updatedKanban.map((list) => {
+        if (list.id === newListId && taskToMove) {
+          return { ...list, tasks: [...list.tasks, taskToMove] }
+        }
+        return list
+      })
+      setFile(kanbanToMarkdown(finalKanban))
+      saveFile(kanbanToMarkdown(finalKanban))
+      return finalKanban
+    })
+  }
+
   function getMarkdown() {
     return kanbanToMarkdown(kanban)
   }
 
-  return { kanban, updateTask, updateStatus, updateListName }
+  return { kanban, updateTask, updateStatus, updateListName, updateTaskList }
 }
