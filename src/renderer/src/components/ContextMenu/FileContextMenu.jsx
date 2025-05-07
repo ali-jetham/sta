@@ -1,3 +1,4 @@
+import { forwardRef, useRef, useImperativeHandle } from 'react'
 import { createRendererLogger } from '../../utils/logger'
 import styles from './FileContextMenu.module.css'
 
@@ -5,7 +6,14 @@ const log = createRendererLogger('FileContextMenu')
 
 // TODO: rename component to something more appropriate
 
-export default function FileContextMenu({ active, menuPosition, dirPath }) {
+const FileContextMenu = forwardRef((props, ref) => {
+  const { active, menuPosition, dirPath } = props
+  const menuRef = useRef(null)
+
+  useImperativeHandle(ref, () => {
+    return menuRef.current
+  })
+
   function handleNewFile(e) {
     log.info(`[handleNewFile] called`)
     window.electron.ipcRenderer.send('FileContextMenu:createFile', dirPath)
@@ -13,6 +21,7 @@ export default function FileContextMenu({ active, menuPosition, dirPath }) {
 
   return (
     <div
+      ref={menuRef}
       className={`${styles.menuContainer} ${active ? styles.active : ''}`}
       style={{ top: menuPosition.top, left: menuPosition.left }}
     >
@@ -23,4 +32,6 @@ export default function FileContextMenu({ active, menuPosition, dirPath }) {
       <button className={styles.buttons}>Delete</button>
     </div>
   )
-}
+})
+
+export default FileContextMenu

@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom'
 import { Folder, FolderOpen } from 'lucide-react'
 import { useClickOutside } from '../../hooks/useClickOutside'
 import File from './File'
-import ContextMenu from '../ContextMenu/CreateContextMenu'
+import FileContextMenu from '../ContextMenu/FileContextMenu'
 
 const log = createRendererLogger('Directory')
 
@@ -56,7 +56,11 @@ export default function Directory({ name, path, setTree }) {
 
   return (
     <div className={styles.directoryContainer}>
-      <div className={styles.directory} onClick={handleDirClick} onContextMenu={handleContextMenu}>
+      <div
+        className={styles.directory}
+        onClick={handleDirClick}
+        onContextMenu={handleContextMenu}
+      >
         {collapsed ? <Folder size={16} /> : <FolderOpen size={16} />}
         <span className={styles.dirName}>{name}</span>
       </div>
@@ -75,13 +79,12 @@ export default function Directory({ name, path, setTree }) {
           </div>
         </div>
       )}
-      <ContextMenu ref={createMenuRef} active={showCreateMenu} menuPosition={menuPosition} />
-
-      {/* {showCreateMenu &&
-        createPortal(
-          <CreateContextMenu ref={createMenuRef} active={showCreateMenu} />,
-          document.body
-        )} */}
+      <FileContextMenu
+        ref={createMenuRef}
+        active={showCreateMenu}
+        menuPosition={menuPosition}
+        dirPath={path}
+      />
     </div>
   )
 }

@@ -8,8 +8,9 @@ const log = createLogger('file')
 
 export function initFile() {
   ipcMain.handle('file:getTree', getFileTree)
-  ipcMain.on('file:openFile', openFile)
   ipcMain.handle('file:saveFile', saveFile)
+  ipcMain.on('file:openFile', openFile)
+  ipcMain.on('FileContextMenu:createFile', createFile)
 }
 
 // Return a file tree object.
@@ -72,4 +73,8 @@ function saveFile(event, content, path) {
       return reject(`[saveFile] content or path is null`)
     }
   })
+}
+
+function createFile(event, dirPath) {
+  log.info(`[createFile] in dir: ${dirPath}`)
 }

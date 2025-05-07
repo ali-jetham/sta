@@ -1,10 +1,18 @@
 import { useEffect } from 'react'
+import { createRendererLogger } from '../utils/logger'
+
+const log = createRendererLogger('useClickOutside')
 
 export function useClickOutside(elementRef, callback) {
-  console.log(elementRef)
   function handleClickOutside(event) {
+    // log.info(`[handleClickOutside] click detected: ${event.target}`)
+    // log.debug(`[handleClickOutside] elementRef: ${elementRef}`)
+
+    console.log(`[handleClickOutside] click detected: ${event.target}`)
+    console.log(`[handleClickOutside] elementRef: ${elementRef}`)
+
     if (!elementRef?.current?.contains(event.target) && callback) {
-      console.log('click outside event')
+      log.debug('[handleClickOutside] click outside event')
       callback()
     }
   }
@@ -14,5 +22,5 @@ export function useClickOutside(elementRef, callback) {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside, true)
     }
-  }, [])
+  }, [elementRef, callback])
 }
