@@ -24,3 +24,13 @@
 .buttons:hover {
     background-color: var(--ui-accent-1);
 }
+
+.nameField {
+    all: unset;
+    background-color: var(--primary-bg-color);
+    padding: .2rem;
+    max-height: 1.5rem;
+    min-height: 1.5rem;
+    border-radius: .4rem;
+    width: 8rem;
+}

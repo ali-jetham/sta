@@ -1,5 +1,5 @@
 import styles from './Task.module.css'
-import { Square, SquareCheckBig, SquareSlash, X } from 'lucide-react'
+import { Plus, Square, SquareCheckBig, SquareSlash, Trash, X } from 'lucide-react'
 import clsx from 'clsx'
 import { useState } from 'react'
 import Editor from '../Editor/Editor'
@@ -64,6 +64,7 @@ export default function Task({ listId, task, updateTask, updateStatus }) {
       {!isEditing && (
         <div className={styles.mainContent} onDoubleClick={handleDoubleClick}>
           <div className={styles.mainText}>{task.mainText}</div>
+
           <div className={styles.metadata}>
             {task.priority && (
               <div>

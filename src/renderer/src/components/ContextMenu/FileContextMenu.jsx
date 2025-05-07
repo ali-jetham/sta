@@ -17,7 +17,7 @@ const FileContextMenu = forwardRef((props, ref) => {
 
   function handleNewFile(e) {
     log.info(`[handleNewFile] called`)
-    window.electron.ipcRenderer.send('FileContextMenu:createFile', dirPath)
+    window.electron.ipcRenderer.send('FileContextMenu:createFile', { dirPath, fileName })
   }
 
   return (
@@ -27,12 +27,15 @@ const FileContextMenu = forwardRef((props, ref) => {
       style={{ top: menuPosition.top, left: menuPosition.left }}
     >
       <button className={styles.buttons}>New Folder</button>
-      <button className={styles.buttons} onClick={handleNewFile}>
+      <button
+        className={styles.buttons}
+        onClick={() => setShowNameField((prev) => !prev)}
+      >
         New File
       </button>
       <button className={styles.buttons}>Delete</button>
 
-      {showNameField && <textarea name="" id=""></textarea>}
+      {showNameField && <input className={styles.nameField} type="text" />}
     </div>
   )
 })

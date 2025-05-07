@@ -47,7 +47,7 @@ function openFile(event, filePath) {
   fs.readFile(filePath, 'utf-8', (err, data) => {
     if (err) {
       log.error(`[openFile] ${err}`)
-      return
+      return null
     }
     // log.verbose(data)
     const fileName = path.basename(filePath, '.md')

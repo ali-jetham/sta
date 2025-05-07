@@ -9,7 +9,7 @@ const log = createRendererLogger('MainView')
 
 export default function MainView() {
   const [view, setView] = useState('editor')
-  const [file, setFile] = useState()
+  const [file, setFile] = useState(null)
   const [filePath, setFilePath] = useState()
   const [fileName, setFileName] = useState()
   const prevFileRef = useRef()
@@ -47,10 +47,10 @@ export default function MainView() {
         </>
       )}
 
-      {view === 'kanban' ? (
+      {file !== null && view === 'kanban' ? (
         <Kanban fileContent={file} setFile={setFile} saveFile={saveFile} />
       ) : null}
-      {view === 'editor' ? (
+      {file !== null && view === 'editor' ? (
         <Editor
           content={file}
           onContentChange={setFile}
