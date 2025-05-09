@@ -7,11 +7,8 @@ import { DndContext, useSensors, useSensor, PointerSensor } from '@dnd-kit/core'
 const log = createRendererLogger('Kanban')
 
 export default function Kanban({ fileContent, setFile, saveFile }) {
-  const { kanban, updateTask, updateStatus, updateListName, updateTaskList } = useKanban(
-    fileContent,
-    setFile,
-    saveFile
-  )
+  const { kanban, addTask, updateTask, updateStatus, updateListName, updateTaskList } =
+    useKanban(fileContent, setFile, saveFile)
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -30,6 +27,7 @@ export default function Kanban({ fileContent, setFile, saveFile }) {
   const listEl = kanban.map((list) => (
     <List
       list={list}
+      addTask={addTask}
       updateTask={updateTask}
       updateStatus={updateStatus}
       updateListName={updateListName}

@@ -1,0 +1,18 @@
+.menuContainer {
+    /* visibility: hidden; */
+    position: fixed;
+    background-color: var(--secondary-bg-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    z-index: 999;
+}
+
+.buttons {
+    all: unset;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .4rem;
+}

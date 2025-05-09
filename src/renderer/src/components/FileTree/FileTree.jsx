@@ -33,9 +33,9 @@ export default function FileTree() {
     <div className={`${styles.fileTreeContainer} noselect`}>
       <div className={styles.headingContainer}>
         <h1 className={styles.workspaceHeading}>Workspace</h1>
-        <button className={styles.addButton}>
+        {/* <button className={styles.addButton}>
           <Plus size={19.2} />
-        </button>
+        </button> */}
       </div>
 
       <Directory name={workspace} path={workspacePath} setTree={setTree} />

@@ -46,3 +46,11 @@
   flex-direction: column;
   gap: .5rem;
 }
+
+.addTask {
+  min-height: 2rem;
+  border-radius: 0.4rem;
+  padding: .4rem;
+  border: 1px solid var(--ui-accent-1);
+  /* box-shadow: 0 0 5px rgba(76, 86, 106, 1); */
+}

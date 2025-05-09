@@ -17,6 +17,7 @@ export default function Directory({ name, path, setTree }) {
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 300 })
   const createMenuRef = useRef(null)
 
+  // TODO: maybe move this into the FileContextMenu
   useClickOutside(createMenuRef, () => setShowCreateMenu(false))
 
   function handleContextMenu(event) {

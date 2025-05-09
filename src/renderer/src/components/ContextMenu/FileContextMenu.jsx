@@ -4,8 +4,6 @@ import styles from './FileContextMenu.module.css'
 
 const log = createRendererLogger('FileContextMenu')
 
-// TODO: rename component to something more appropriate
-
 const FileContextMenu = forwardRef((props, ref) => {
   const { active, menuPosition, dirPath } = props
   const menuRef = useRef(null)

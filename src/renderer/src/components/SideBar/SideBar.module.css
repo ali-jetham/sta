@@ -12,12 +12,11 @@
     padding-top: 1rem;
     padding-bottom: 1rem;
     overflow: hidden;
-    color: var(--font-primary-color);
 }
 
 .divider {
     min-width: .1rem;
-    background-color: var(--font-primary-color);
+    background-color: var(--border-color);
 }
 
 .divider.resizing {
@@ -27,6 +26,6 @@
 
 .divider:hover {
     cursor: ew-resize;
-    background-color: var(--active-color);
+    background-color: var(--secondary-border-color);
     transform: scaleX(2);
 }

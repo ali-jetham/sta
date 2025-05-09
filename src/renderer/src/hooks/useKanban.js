@@ -28,10 +28,23 @@ export function useKanban(fileContent, setFile, saveFile) {
     setKanban(newKanban)
   }, [fileContent])
 
+  function addTask(listId, mainText) {
+    log.debug(`[addTask] with listId: ${listId} mainText: ${mainText}`)
+    setKanban((prevKanban) => {
+      const updatedKanban = prevKanban.map((list) =>
+        list.id === listId
+          ? { ...list, tasks: [...list.tasks, { status: '', mainText }] }
+          : list
+      )
+      log.verbose(updatedKanban)
+      setFile(kanbanToMarkdown(updatedKanban))
+      saveFile()
+      return updatedKanban
+    })
+  }
+
   function updateTask(taskString, listId, taskId) {
-    log.debug(
-      `[updatedTask] called for id: ${taskId} status: ${status} taskLine: ${taskString}`
-    )
+    log.debug(`[updatedTask] called for id: ${taskId} taskLine: ${taskString}`)
     const newTask = parseTaskLine(taskString, taskId)
     log.verbose(`[updateTask] ${JSON.stringify(newTask, null, 2)}`)
 
@@ -52,6 +65,7 @@ export function useKanban(fileContent, setFile, saveFile) {
       })
     })
     setFile(kanbanToMarkdown(kanban))
+    saveFile()
   }
 
   function updateStatus(status, listId, taskId) {
@@ -125,5 +139,5 @@ export function useKanban(fileContent, setFile, saveFile) {
     return kanbanToMarkdown(kanban)
   }
 
-  return { kanban, updateTask, updateStatus, updateListName, updateTaskList }
+  return { kanban, addTask, updateTask, updateStatus, updateListName, updateTaskList }
 }
