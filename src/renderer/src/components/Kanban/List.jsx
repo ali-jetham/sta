@@ -58,11 +58,12 @@ export default function List({
 
   function handleAddTask(e) {
     log.info(`[handleAddTask] called`)
-    if (e.key === 'Enter') {
+    if (e.ctrlKey && e.key === 'Enter') {
       e.preventDefault()
       log.info(`[handleAddTask] with content: ${newTaskText}`)
       setIsAddingTask(false)
       addTask(list.id, newTaskText)
+      setNewTaskText('')
     }
   }
 

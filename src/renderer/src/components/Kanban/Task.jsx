@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import Editor from '../Editor/Editor'
 import { createRendererLogger } from '../../utils/logger'
-import { useDraggable, useDroppable } from '@dnd-kit/core'
+import { useDraggable } from '@dnd-kit/core'
 
 const log = createRendererLogger('Task')
 
@@ -35,6 +35,7 @@ export default function Task({ listId, task, deleteTask, updateTask, updateStatu
   }
 
   function onContentChange(newContent) {
+    log.debug(`[onContentChange] content: ${newContent}`)
     setContent(newContent)
   }
 

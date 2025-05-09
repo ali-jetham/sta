@@ -3,7 +3,7 @@ import { createRendererLogger } from './logger'
 const log = createRendererLogger('markdownParser')
 
 // TODO: optimize/simplify this function
-export function parseTaskLine(taskLine, id) {
+export function parseTaskLine(taskString, id = 0) {
   let match
   let mainText = ''
   let status = ''
@@ -13,16 +13,16 @@ export function parseTaskLine(taskLine, id) {
   let done = ''
   let created = ''
 
-  const hasMarker = /^[-+*]\s+\[[xX\/ ]\]/.test(taskLine)
+  const hasMarker = /^[-+*]\s+\[[xX\/ ]\]/.test(taskString)
 
   if (hasMarker) {
     try {
-      match = taskLine.match(/^\s*[-+*]\s+\[\s*([xX\/ ])\s*\]\s*(.*?)(?=\s*\[\w+::|$)/)
+      match = taskString.match(/^\s*[-+*]\s+\[\s*([xX\/ ])\s*\]\s*(.*?)(?=\s*\[\w+::|$)/)
       if (match && match[2]) {
         mainText = match[2].trim()
       }
 
-      match = taskLine.match(/\[\s*([xX\/ ])\s*\]/)
+      match = taskString.match(/\[\s*([xX\/ ])\s*\]/)
       if (match && match[1]) {
         status = match[1].trim()
       }
@@ -30,25 +30,25 @@ export function parseTaskLine(taskLine, id) {
       log.error(error)
     }
   } else {
-    mainText = taskLine
+    mainText = taskString
   }
 
   const attributeRegex = /\[\w+::\s[^\]]+\]/g
   mainText = mainText.replace(attributeRegex, '').trim()
 
-  match = taskLine.match(/\[priority::\s([^\]]+)\]/)
+  match = taskString.match(/\[priority::\s([^\]]+)\]/)
   priority = match ? match[1] : ''
 
-  match = taskLine.match(/\[start::\s([^\]]+)\]/)
+  match = taskString.match(/\[start::\s([^\]]+)\]/)
   start = match ? match[1] : ''
 
-  match = taskLine.match(/\[due::\s([^\]]+)\]/)
+  match = taskString.match(/\[due::\s([^\]]+)\]/)
   due = match ? match[1] : ''
 
-  match = taskLine.match(/\[done::\s([^\]]+)\]/)
+  match = taskString.match(/\[done::\s([^\]]+)\]/)
   done = match ? match[1] : ''
 
-  match = taskLine.match(/\[created::\s([^\]]+)\]/)
+  match = taskString.match(/\[created::\s([^\]]+)\]/)
   created = match ? match[1] : ''
 
   return {
