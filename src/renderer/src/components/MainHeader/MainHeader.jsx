@@ -16,9 +16,11 @@ export default function MainHeader(props) {
       <p className={styles.projectName}>{props.fileName}</p>
 
       <div className={styles.actionButtonsContainer}>
-        <button className={styles.actionButton}>
-          <SquarePlus size={20} />
-        </button>
+        {props.view === 'kanban' && (
+          <button className={styles.actionButton}>
+            <SquarePlus size={20} />
+          </button>
+        )}
 
         {props.view === 'kanban' ? (
           <button className={styles.actionButton} onClick={handleViewSwitch}>

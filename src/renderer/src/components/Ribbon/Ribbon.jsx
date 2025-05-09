@@ -8,9 +8,7 @@ export default function Ribbon(props) {
         <PanelLeft />
       </button>
 
-      <button className={styles.settings}>
-        <Settings />
-      </button>
+      <button className={styles.settings}>{/* <Settings /> */}</button>
     </div>
   )
 }

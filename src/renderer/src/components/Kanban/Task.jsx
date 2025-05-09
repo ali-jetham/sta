@@ -5,12 +5,13 @@ import { useState } from 'react'
 import Editor from '../Editor/Editor'
 import { createRendererLogger } from '../../utils/logger'
 import { useDraggable } from '@dnd-kit/core'
+import { taskToString } from '../../utils/markdownParser'
 
 const log = createRendererLogger('Task')
 
 export default function Task({ listId, task, deleteTask, updateTask, updateStatus }) {
   const [isEditing, setIsEditing] = useState(false)
-  const [content, setContent] = useState(task.mainText)
+  const [content, setContent] = useState(taskToString(task))
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: task.id,
     data: { taskListId: listId }

@@ -91,3 +91,25 @@ export function kanbanToMarkdown(kanban) {
 
   return rawMd
 }
+
+// Return a raw string; take task object as input
+export function taskToString(task, includeStatus) {
+  const status =
+    task.status === 'x' || task.status === 'X'
+      ? '- [x] '
+      : task.status === '/'
+        ? '- [/] '
+        : '- [ ] '
+
+  const priority = task.priority ? ` [priority:: ${task.priority}]` : ''
+  const start = task.start ? ` [start:: ${task.start}]` : ''
+  const due = task.due ? ` [due:: ${task.due}]` : ''
+  const done = task.done ? ` [done:: ${task.done}]` : ''
+  const created = task.created ? ` [created:: ${task.created}]` : ''
+
+  if (includeStatus) {
+    return `${status}${task.mainText}${priority}${start}${due}${done}${created}`
+  } else {
+    return `${task.mainText}${priority}${start}${due}${done}${created}`
+  }
+}
