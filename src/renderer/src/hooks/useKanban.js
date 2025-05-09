@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { createRendererLogger } from '../utils/logger.js'
 import { parseTaskLine, kanbanToMarkdown } from '../utils/markdownParser.js'
+import { Save } from 'lucide-react'
 
 const log = createRendererLogger('useKanban')
 
@@ -37,6 +38,24 @@ export function useKanban(fileContent, setFile, saveFile) {
           : list
       )
       log.verbose(updatedKanban)
+      setFile(kanbanToMarkdown(updatedKanban))
+      saveFile()
+      return updatedKanban
+    })
+  }
+
+  function deleteTask(listId, taskId) {
+    log.debug(`[deleteTask] with listId: ${listId} taskId: ${taskId}`)
+
+    setKanban((prevKanban) => {
+      const updatedKanban = prevKanban.map((list) =>
+        list.id === listId
+          ? { ...list, tasks: list.tasks.filter((task) => task.id !== taskId) }
+          : list
+      )
+
+      log.verbose(`[deleteTask] updatedKanban: ${JSON.stringify(updatedKanban, null, 2)}`)
+
       setFile(kanbanToMarkdown(updatedKanban))
       saveFile()
       return updatedKanban
@@ -139,5 +158,13 @@ export function useKanban(fileContent, setFile, saveFile) {
     return kanbanToMarkdown(kanban)
   }
 
-  return { kanban, addTask, updateTask, updateStatus, updateListName, updateTaskList }
+  return {
+    kanban,
+    addTask,
+    deleteTask,
+    updateTask,
+    updateStatus,
+    updateListName,
+    updateTaskList
+  }
 }

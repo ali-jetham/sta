@@ -15,6 +15,11 @@
   height: 100%;
 }
 
+.text {
+  display: flex;
+  justify-content: space-between;
+}
+
 .mainText {
   /* fixes the vertical alignment issue with checkbox */
   line-height: 1.2;
@@ -72,10 +77,8 @@
   background-color: var(--ui-accent-3);
 }
 
-.editingCloseButton {
-  all: unset;
-}
-
+.editingCloseButton,
+.deleteButton,
 .statusButton {
-  all: unset
+  all: unset;
 }

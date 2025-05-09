@@ -11,10 +11,11 @@ const log = createRendererLogger('List')
 
 export default function List({
   list,
+  addTask,
+  deleteTask,
   updateTask,
   updateStatus,
-  updateListName,
-  addTask
+  updateListName
 }) {
   const [isEditing, setIsEditing] = useState(false)
   const [listName, setListName] = useState(list.listName)
@@ -29,6 +30,7 @@ export default function List({
     <Task
       listId={list.id}
       task={task}
+      deleteTask={deleteTask}
       updateTask={updateTask}
       updateStatus={updateStatus}
     />

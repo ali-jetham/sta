@@ -8,7 +8,7 @@ import { useDraggable, useDroppable } from '@dnd-kit/core'
 
 const log = createRendererLogger('Task')
 
-export default function Task({ listId, task, updateTask, updateStatus }) {
+export default function Task({ listId, task, deleteTask, updateTask, updateStatus }) {
   const [isEditing, setIsEditing] = useState(false)
   const [content, setContent] = useState(task.mainText)
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -42,6 +42,10 @@ export default function Task({ listId, task, updateTask, updateStatus }) {
     e.stopPropagation()
     log.debug(`[onStatusClick] with status: ${task.status}`)
     updateStatus(task.status, listId, task.id)
+  }
+
+  function handleTaskDelete() {
+    deleteTask(listId, task.id)
   }
 
   return (
@@ -81,7 +85,13 @@ export default function Task({ listId, task, updateTask, updateStatus }) {
 
       {!isEditing && (
         <div className={styles.mainContent} onDoubleClick={handleDoubleClick}>
-          <div className={styles.mainText}>{task.mainText}</div>
+          <div className={styles.text}>
+            <div className={styles.mainText}>{task.mainText}</div>
+
+            <button className={styles.deleteButton} onClick={handleTaskDelete}>
+              <Trash size={16} />
+            </button>
+          </div>
 
           <div className={styles.metadata}>
             {task.priority && (
