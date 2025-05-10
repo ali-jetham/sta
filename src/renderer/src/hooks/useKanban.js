@@ -29,6 +29,16 @@ export function useKanban(fileContent, setFile, saveFile) {
     setKanban(newKanban)
   }, [fileContent])
 
+  function addList(listName) {
+    if (kanban) {
+      log.debug(`[addList] kanban exists`)
+    } else {
+      log.debug(`[addList] kanban doesnt exists`)
+    }
+  }
+
+  function deleteList() {}
+
   function addTask(listId, mainText) {
     log.debug(`[addTask] with listId: ${listId} mainText: ${mainText}`)
 
