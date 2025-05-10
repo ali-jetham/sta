@@ -1,9 +1,7 @@
 import styles from './FileTree.module.css'
 import { createRendererLogger } from '../../utils/logger'
 import { useState, useEffect } from 'react'
-import { Plus } from 'lucide-react'
 import Directory from './Directory'
-import File from './File'
 
 const log = createRendererLogger('FileTree')
 

@@ -79,6 +79,7 @@ export default function Directory({ name, path, setTree }) {
           </div>
         </div>
       )}
+      {/* TODO: conditionally render this */}
       <FileContextMenu
         ref={createMenuRef}
         active={showCreateMenu}
