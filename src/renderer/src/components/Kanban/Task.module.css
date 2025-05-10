@@ -8,6 +8,7 @@
   background-color: var(--primary-bg-color);
   overflow: hidden;
   width: 100%;
+  min-height: max-content;
 }
 
 .mainContent {

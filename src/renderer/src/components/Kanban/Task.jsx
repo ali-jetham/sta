@@ -1,10 +1,10 @@
 import styles from './Task.module.css'
-import { Plus, Square, SquareCheckBig, SquareSlash, Trash, X } from 'lucide-react'
+import { Square, SquareCheckBig, SquareSlash, Trash, X } from 'lucide-react'
 import clsx from 'clsx'
 import { useState } from 'react'
 import Editor from '../Editor/Editor'
 import { createRendererLogger } from '../../utils/logger'
-import { useDraggable } from '@dnd-kit/core'
+import { useDraggable, DragOverlay } from '@dnd-kit/core'
 import { taskToString } from '../../utils/markdownParser'
 
 const log = createRendererLogger('Task')

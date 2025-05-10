@@ -86,6 +86,7 @@ export function useKanban(fileContent, setFile, saveFile) {
             ...list,
             tasks: list.tasks.map((task) => {
               if (task.id === taskId) {
+                newTask.status = task.status
                 return { ...newTask }
               }
               return task

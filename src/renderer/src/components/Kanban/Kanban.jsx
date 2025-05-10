@@ -2,7 +2,15 @@ import styles from './Kanban.module.css'
 import { createRendererLogger } from '../../utils/logger.js'
 import { useKanban } from '../../hooks/useKanban.js'
 import List from './List.jsx'
-import { DndContext, useSensors, useSensor, PointerSensor } from '@dnd-kit/core'
+import {
+  DndContext,
+  DragOverlay,
+  useSensors,
+  useSensor,
+  PointerSensor
+} from '@dnd-kit/core'
+import { useState, useMemo } from 'react'
+import Task from './Task.jsx'
 
 const log = createRendererLogger('Kanban')
 
@@ -25,11 +33,27 @@ export default function Kanban({ fileContent, setFile, saveFile }) {
     })
   )
 
+  const [activeTask, setActiveTask] = useState({ taskId: null, listId: null })
+  const activeTaskData = useMemo(() => {
+    if (!activeTask.taskId || !kanban) {
+      return null
+    }
+
+    for (const list of kanban) {
+      if (list.id === activeTask.listId) {
+        const task = list.tasks.find((task) => task.id === activeTask.taskId)
+        if (task) {
+          return task
+        }
+      }
+    }
+
+    return null
+  }, [activeTask, kanban])
+
   if (!kanban) {
     return
   }
-
-  log.verbose(`kanban is ${JSON.stringify(kanban, null, 2)}`)
 
   const listEl = kanban.map((list) => (
     <List
@@ -42,8 +66,14 @@ export default function Kanban({ fileContent, setFile, saveFile }) {
     />
   ))
 
-  function handleDragStart() {
-    log.debug('[handleDragStart]')
+  function handleDragStart(event) {
+    log.debug(
+      `[handleDragStart] taskId: ${event.active.id} listId; ${event.active.data.current.taskListId}`
+    )
+    setActiveTask({
+      taskId: event.active.id,
+      listId: event.active.data.current.taskListId
+    })
   }
 
   function handleDragEnd(event) {
@@ -59,6 +89,10 @@ export default function Kanban({ fileContent, setFile, saveFile }) {
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className={styles.kanbanContainer}>{listEl}</div>
+
+      <DragOverlay dropAnimation={null}>
+        {activeTaskData && <Task task={activeTaskData} listId={activeTask.listId} />}
+      </DragOverlay>
     </DndContext>
   )
 }

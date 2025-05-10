@@ -1,7 +1,9 @@
 .listContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: min-content;
   min-width: 18rem;
   max-width: 18rem;
-  height: 30rem;
   border: 1px solid var(--border-color);
   border-radius: .4rem;
   padding: .4rem;
@@ -44,9 +46,10 @@
 .tasksContainer {
   display: flex;
   flex-direction: column;
+  /* TODO: this flex: 1 makes the vertical scroll work, but it also makes the container take up the whole height */
+  flex: 1;
   gap: .5rem;
-  height: 100%;
-  overflow-y: auto;
+  overflow: auto;
 }
 
 .addTask {
@@ -54,5 +57,4 @@
   border-radius: 0.4rem;
   padding: .4rem;
   border: 1px solid var(--ui-accent-1);
-  /* box-shadow: 0 0 5px rgba(76, 86, 106, 1); */
 }
