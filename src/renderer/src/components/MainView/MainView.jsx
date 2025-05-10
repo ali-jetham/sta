@@ -39,7 +39,14 @@ export default function MainView() {
 
   return (
     <div className={`${styles.mainViewContainer} noselect`}>
-      <MainHeader fileName={fileName} view={view} setView={setView} saveFile={saveFile} />
+      <MainHeader
+        view={view}
+        fileName={fileName}
+        setFileName={setFileName}
+        setView={setView}
+        saveFile={saveFile}
+        setFile={setFile}
+      />
 
       {file === null && (
         <>

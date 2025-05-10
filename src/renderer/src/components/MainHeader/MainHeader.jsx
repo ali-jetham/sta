@@ -1,28 +1,40 @@
-import { useState } from 'react'
 import styles from './MainHeader.module.css'
-import { KanbanSquare, SquarePlus, FileType2, Save } from 'lucide-react'
+import { KanbanSquare, SquarePlus, FileType2, Save, CircleX } from 'lucide-react'
 
-export default function MainHeader(props) {
+export default function MainHeader({
+  view,
+  fileName,
+  setFileName,
+  setView,
+  saveFile,
+  setFile
+}) {
   function handleViewSwitch() {
-    if (props.view === 'kanban') {
-      props.setView('editor')
-    } else if (props.view === 'editor') {
-      props.setView('kanban')
+    if (view === 'kanban') {
+      setView('editor')
+    } else if (view === 'editor') {
+      setView('kanban')
     }
+  }
+
+  function handleFileClose() {
+    saveFile()
+    setFile(null)
+    setFileName(null)
   }
 
   return (
     <div className={styles.mainHeaderContainer}>
-      <p className={styles.projectName}>{props.fileName}</p>
+      <p className={styles.projectName}>{fileName}</p>
 
       <div className={styles.actionButtonsContainer}>
-        {props.view === 'kanban' && (
+        {view === 'kanban' && (
           <button className={styles.actionButton}>
             <SquarePlus size={20} />
           </button>
         )}
 
-        {props.view === 'kanban' ? (
+        {view === 'kanban' ? (
           <button className={styles.actionButton} onClick={handleViewSwitch}>
             <FileType2 size={20} />
           </button>
@@ -32,8 +44,12 @@ export default function MainHeader(props) {
           </button>
         )}
 
-        <button className={styles.actionButton} onClick={props.saveFile}>
+        <button className={styles.actionButton} onClick={saveFile}>
           <Save size={20} />
+        </button>
+
+        <button className={styles.actionButton} onClick={handleFileClose}>
+          <CircleX size={20} />
         </button>
       </div>
     </div>
