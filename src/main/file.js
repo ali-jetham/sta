@@ -1,8 +1,9 @@
-import { getWorkSpacePath } from './workspace'
-import { createLogger } from './logger'
-import { ipcMain } from 'electron'
 import fs from 'node:fs'
 import path from 'node:path'
+import { ipcMain } from 'electron'
+import chokidar from 'chokidar'
+import { getWorkSpacePath } from './workspace'
+import { createLogger } from './logger'
 
 const log = createLogger('file')
 
@@ -10,7 +11,8 @@ export function initFile() {
   ipcMain.handle('file:getTree', getFileTree)
   ipcMain.handle('file:saveFile', saveFile)
   ipcMain.on('file:openFile', openFile)
-  ipcMain.on('FileContextMenu:createFile', createFile)
+  ipcMain.on('FileContextMenu:create', createFile)
+  ipcMain.on('FileContextMenu:delete', deleteFile)
 }
 
 // Return a file tree object.
@@ -77,6 +79,34 @@ function saveFile(event, content, path) {
   })
 }
 
-function createFile(event, dirPath) {
-  log.info(`[createFile] in dir: ${dirPath}`)
+async function deleteFile(event, path) {
+  log.debug(`[deleteFile] path: ${path}`)
+  fs.rm(path, { recursive: true }, (err) => {
+    if (err) {
+      log.error(`[deleteFile] error: ${err}`)
+      return
+    }
+  })
+}
+
+function createFile(event, item) {
+  const { type, name } = item
+  let { path: filePath } = item
+  filePath = path.join(filePath, name)
+  log.info(`[createFile] type: ${type} name: ${name} path: ${filePath}`)
+  if (type === 'dir') {
+    fs.mkdir(filePath, (err) => {
+      if (err) {
+        log.error(`[createFile] error: ${err}`)
+        return
+      }
+    })
+  } else if (type === 'file') {
+    fs.writeFile(filePath, '', (err) => {
+      if (err) {
+        log.error(`[createFile] error: ${err}`)
+        return
+      }
+    })
+  }
 }
