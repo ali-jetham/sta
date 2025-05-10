@@ -13,18 +13,13 @@ export default function Directory({ name, path, setTree }) {
   const [collapsed, setCollapsed] = useState(true)
   const [firstClick, setFirstClick] = useState(false)
   const [children, setChildren] = useState([])
-  const [showCreateMenu, setShowCreateMenu] = useState(false)
-  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 300 })
-  const createMenuRef = useRef(null)
-
-  // TODO: maybe move this into the FileContextMenu
-  useClickOutside(createMenuRef, () => setShowCreateMenu(false))
+  const [showFileMenu, setShowFileMenu] = useState(false)
+  const [menuPos, setMenuPos] = useState({ top: 0, left: 300 })
 
   function handleContextMenu(event) {
     log.debug('handleContextMenu() called')
-    log.debug(`x: ${event.clientX} y: ${event.clientY} `)
-    setMenuPosition({ top: event.clientX, left: event.clientY })
-    setShowCreateMenu(true)
+    setMenuPos({ top: event.clientX, left: event.clientY })
+    setShowFileMenu(true)
   }
 
   function handleDirClick() {
@@ -79,13 +74,14 @@ export default function Directory({ name, path, setTree }) {
           </div>
         </div>
       )}
-      {/* TODO: conditionally render this */}
-      <FileContextMenu
-        ref={createMenuRef}
-        active={showCreateMenu}
-        menuPosition={menuPosition}
-        dirPath={path}
-      />
+
+      {showFileMenu && (
+        <FileContextMenu
+          menuPos={menuPos}
+          path={path}
+          setShowFileMenu={setShowFileMenu}
+        />
+      )}
     </div>
   )
 }

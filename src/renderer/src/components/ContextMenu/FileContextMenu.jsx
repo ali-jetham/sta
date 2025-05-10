@@ -1,29 +1,22 @@
 import { forwardRef, useRef, useImperativeHandle, useState } from 'react'
 import { createRendererLogger } from '../../utils/logger'
 import styles from './FileContextMenu.module.css'
+import { useClickOutside } from '../../hooks/useClickOutside'
 
 const log = createRendererLogger('FileContextMenu')
 
-const FileContextMenu = forwardRef((props, ref) => {
-  const { active, menuPosition, dirPath } = props
+export default function FileContextMenu({ menuPos, path, setShowFileMenu }) {
   const menuRef = useRef(null)
   const [showNameField, setShowNameField] = useState(false)
   const [item, setItem] = useState({ name: null, type: null })
 
-  useImperativeHandle(ref, () => {
-    return menuRef.current
-  })
-
-  function handleNewItem(e) {
-    log.info(`[handleNewItem] called`)
-    // window.electron.ipcRenderer.send('FileContextMenu:createFile', { dirPath, fileName })
-  }
+  useClickOutside(menuRef, () => setShowFileMenu(false))
 
   return (
     <div
       ref={menuRef}
-      className={`${styles.menuContainer} ${active ? styles.active : ''}`}
-      style={{ top: menuPosition.top, left: menuPosition.left }}
+      className={styles.menuContainer}
+      style={{ top: menuPos.top, left: menuPos.left }}
     >
       <button
         className={styles.buttons}
@@ -50,6 +43,4 @@ const FileContextMenu = forwardRef((props, ref) => {
       )}
     </div>
   )
-})
-
-export default FileContextMenu
+}
