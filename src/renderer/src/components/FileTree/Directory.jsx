@@ -1,20 +1,42 @@
 import styles from './Directory.module.css'
 import { createRendererLogger } from '../../utils/logger'
-import { useRef, useState, useEffect } from 'react'
-import { createPortal } from 'react-dom'
+import { useEffect, useState } from 'react'
 import { Folder, FolderOpen } from 'lucide-react'
-import { useClickOutside } from '../../hooks/useClickOutside'
 import File from './File'
 import FileContextMenu from '../ContextMenu/FileContextMenu'
 
 const log = createRendererLogger('Directory')
 
-export default function Directory({ name, path, setTree }) {
+export default function Directory({ name, path, setTree, tree }) {
   const [collapsed, setCollapsed] = useState(true)
   const [firstClick, setFirstClick] = useState(false)
   const [children, setChildren] = useState([])
   const [showFileMenu, setShowFileMenu] = useState(false)
   const [menuPos, setMenuPos] = useState({ top: 0, left: 300 })
+
+  window.electron.ipcRenderer.on('file:treeChanged', handleTreeChange)
+
+  function handleTreeChange(event, pathChanged) {
+    log.debug(`[handleTreeChange] pathChanged; ${pathChanged}`)
+    // TODO: this same snipped is use in the useEffect below, try to reuse it
+    window.electron.ipcRenderer
+      .invoke('file:getTree', path)
+      .then(({ fileTree }) => {
+        setChildren(fileTree)
+        setTree((prevTree) => {
+          const updatedTree = prevTree.map((item) => {
+            if (item.path === path && item.type === 'directory') {
+              return { ...item, children: fileTree }
+            }
+            return item
+          })
+          return updatedTree
+        })
+      })
+      .catch((error) => {
+        log.error(`${error}`)
+      })
+  }
 
   function handleContextMenu(event) {
     log.debug('handleContextMenu() called')
@@ -39,7 +61,6 @@ export default function Directory({ name, path, setTree }) {
               }
               return item
             })
-            // log.verbose(`updatedTree: ${JSON.stringify(updatedTree, null, 2)}`)
             return updatedTree
           })
         })

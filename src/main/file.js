@@ -2,17 +2,57 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { ipcMain } from 'electron'
 import chokidar from 'chokidar'
+import debounce from 'lodash.debounce'
 import { getWorkSpacePath } from './workspace'
 import { createLogger } from './logger'
 
 const log = createLogger('file')
 
-export function initFile() {
+export function initFile(window) {
   ipcMain.handle('file:getTree', getFileTree)
   ipcMain.handle('file:saveFile', saveFile)
   ipcMain.on('file:openFile', openFile)
   ipcMain.on('FileContextMenu:create', createFile)
   ipcMain.on('FileContextMenu:delete', deleteFile)
+  startWatcher(window)
+}
+
+// start chokidar watcher
+function startWatcher(window) {
+  const workspacePath = getWorkSpacePath()
+  let watcher = chokidar.watch(workspacePath, {
+    persistent: true,
+    ignoreInitial: true
+  })
+
+  log.info(`[startWatcher] watching ${workspacePath}`)
+
+  let pathChanged
+  const sendTreeChanged = debounce(() => {
+    window.webContents.send('file:treeChanged', pathChanged)
+  }, 1000)
+
+  watcher
+    .on('add', (filePath) => {
+      log.info(`[startWatcher] ${filePath} was added`)
+      pathChanged = path.dirname(filePath)
+      sendTreeChanged()
+    })
+    .on('addDir', (filePath) => {
+      log.info(`[startWatcher] ${filePath} was added`)
+      pathChanged = path.dirname(filePath)
+      sendTreeChanged()
+    })
+    .on('unlink', (filePath) => {
+      log.info(`[startWatcher] ${filePath} was removed`)
+      pathChanged = path.dirname(filePath)
+      sendTreeChanged()
+    })
+    .on('unlinkDir', (filePath) => {
+      log.info(`[startWatcher] ${filePath} was removed`)
+      pathChanged = path.dirname(filePath)
+      sendTreeChanged()
+    })
 }
 
 // Return a file tree object.

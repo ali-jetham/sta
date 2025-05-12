@@ -41,7 +41,7 @@ function createWindow() {
 
   mainWindow.webContents.on('did-finish-load', () => {
     initWorkspace(mainWindow)
-    initFile()
+    initFile(mainWindow)
   })
 }
 
