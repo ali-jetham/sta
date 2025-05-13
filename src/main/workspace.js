@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import { createLogger } from './logger'
 import { app, dialog, ipcMain } from 'electron'
+import { startWatcher } from './file'
 
 const log = createLogger('workspace')
 let workspacePath = getWorkSpacePath()
@@ -19,22 +20,20 @@ export function initWorkspace(window) {
     askWorkSpacePath(window)
   }
 
-  ipcMain.handle('workspace:open', openWorkSpace)
+  ipcMain.handle('workspace:open', () => openWorkSpace(window))
 }
 
 function getConfigPath() {
   let basePath
   switch (process.platform) {
     case 'win32':
-      basePath =
-        process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming')
+      basePath = process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming')
       break
     case 'darwin':
       basePath = path.join(os.homedir(), 'Library', 'Application Support')
       break
     case 'linux':
-      basePath =
-        process.env.XDG_CONFIG_HOME || path.join(os.homedir(), '.config')
+      basePath = process.env.XDG_CONFIG_HOME || path.join(os.homedir(), '.config')
       break
     default:
       basePath = os.homedir()
@@ -91,6 +90,7 @@ export function getWorkSpacePath() {
       return activePath
     } else {
       log.error(`[getWorkSpacePath] no active workspace found`)
+      return undefined
     }
   } catch (err) {
     log.error('[getWorkSpacePath]', err)
@@ -116,7 +116,7 @@ function addWorkspacePath(workspacePath) {
   })
 }
 
-function openWorkSpace() {
+function openWorkSpace(window) {
   log.debug('[openWorkSpace] openWorkSpace called')
 
   return new Promise((resolve, reject) => {
@@ -130,6 +130,7 @@ function openWorkSpace() {
         log.info(`[openWorkSpace] res: ${res}`)
         addWorkspacePath(res[0])
         resolve(res)
+        startWatcher(window, res[0])
       }
       reject(res)
     } catch (error) {

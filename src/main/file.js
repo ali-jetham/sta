@@ -18,14 +18,19 @@ export function initFile(window) {
 }
 
 // start chokidar watcher
-function startWatcher(window) {
-  const workspacePath = getWorkSpacePath()
-  let watcher = chokidar.watch(workspacePath, {
+export function startWatcher(window, workspacePath) {
+  const effectiveWorkspacePath = workspacePath || getWorkSpacePath()
+  let watcher
+  if (!effectiveWorkspacePath) {
+    log.warn('[startWatcher] No workspace path set, watcher not started')
+    return
+  }
+
+  log.info(`[startWatcher] watching ${effectiveWorkspacePath}`)
+  watcher = chokidar.watch(effectiveWorkspacePath, {
     persistent: true,
     ignoreInitial: true
   })
-
-  log.info(`[startWatcher] watching ${workspacePath}`)
 
   let pathChanged
   const sendTreeChanged = debounce(() => {
@@ -34,7 +39,9 @@ function startWatcher(window) {
 
   watcher
     .on('add', (filePath) => {
-      log.info(`[startWatcher] ${filePath} was added`)
+      log.info(
+        `[startWatcher] ${filePath} was added, pathchanged: ${path.dirname(filePath)}`
+      )
       pathChanged = path.dirname(filePath)
       sendTreeChanged()
     })
