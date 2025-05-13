@@ -1,9 +1,9 @@
 {
   "name": "sta",
-  "version": "1.0.0",
-  "description": "An Electron application with React",
+  "version": "0.1.0",
+  "description": "A todo app using todo.md format",
   "main": "./out/main/index.js",
-  "author": "example.com",
+  "author": "ali-jetham",
   "homepage": "https://electron-vite.org",
   "type": "module",
   "scripts": {
@@ -33,8 +33,7 @@
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.488.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "remark": "^15.0.1"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^2.0.0",
