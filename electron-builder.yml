@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: com.sta.app
 productName: sta
 directories:
   buildResources: build
@@ -31,7 +31,7 @@ linux:
   target:
     - AppImage
     - deb
-  maintainer: electronjs.org
+  maintainer: ali-jetham
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}
