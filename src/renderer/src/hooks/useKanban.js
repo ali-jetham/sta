@@ -30,8 +30,22 @@ export function useKanban(fileContent, setFile, saveFile) {
   }, [fileContent])
 
   function addList(listName) {
+    log.debug(`[addList] listName: ${listName}`)
     if (kanban) {
       log.debug(`[addList] kanban exists`)
+      setKanban((prevKanban) => {
+        const newList = {
+          id: prevKanban.length + 1,
+          listName,
+          markCompleted: false,
+          tasks: []
+        }
+        const updatedKanban = [...prevKanban, newList]
+        log.verbose(JSON.stringify(updatedKanban, null, 2))
+        setFile(kanbanToMarkdown(updatedKanban))
+        saveFile()
+        return updatedKanban
+      })
     } else {
       log.debug(`[addList] kanban doesnt exists`)
     }
@@ -49,7 +63,7 @@ export function useKanban(fileContent, setFile, saveFile) {
       const updatedKanban = prevKanban.map((list) =>
         list.id === listId ? { ...list, tasks: [...list.tasks, newTask] } : list
       )
-      log.verbose(updatedKanban)
+      log.verbose(JSON.stringify(updatedKanban, null, 2))
       setFile(kanbanToMarkdown(updatedKanban))
       saveFile()
       return updatedKanban
@@ -133,7 +147,7 @@ export function useKanban(fileContent, setFile, saveFile) {
           : list
       )
       setFile(kanbanToMarkdown(updatedkanban))
-      saveFile(kanbanToMarkdown(updatedkanban))
+      saveFile()
       return updatedkanban
     })
   }
@@ -163,8 +177,9 @@ export function useKanban(fileContent, setFile, saveFile) {
         }
         return list
       })
+      log.verbose(JSON.stringify(finalKanban, null, 2))
       setFile(kanbanToMarkdown(finalKanban))
-      saveFile(kanbanToMarkdown(finalKanban))
+      saveFile()
       return finalKanban
     })
   }
@@ -179,6 +194,7 @@ export function useKanban(fileContent, setFile, saveFile) {
     deleteTask,
     updateTask,
     updateStatus,
+    addList,
     updateListName,
     updateTaskList
   }

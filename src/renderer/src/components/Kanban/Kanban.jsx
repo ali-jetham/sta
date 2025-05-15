@@ -14,13 +14,20 @@ import Task from './Task.jsx'
 
 const log = createRendererLogger('Kanban')
 
-export default function Kanban({ fileContent, setFile, saveFile }) {
+export default function Kanban({
+  fileContent,
+  setFile,
+  saveFile,
+  isAddingList,
+  setIsAddingList
+}) {
   const {
     kanban,
     addTask,
     deleteTask,
     updateTask,
     updateStatus,
+    addList,
     updateListName,
     updateTaskList
   } = useKanban(fileContent, setFile, saveFile)
@@ -33,6 +40,7 @@ export default function Kanban({ fileContent, setFile, saveFile }) {
     })
   )
 
+  const [newListName, setNewListName] = useState('')
   const [activeTask, setActiveTask] = useState({ taskId: null, listId: null })
   const activeTaskData = useMemo(() => {
     if (!activeTask.taskId || !kanban) {
@@ -66,6 +74,14 @@ export default function Kanban({ fileContent, setFile, saveFile }) {
     />
   ))
 
+  function handleAddList() {
+    addList(newListName)
+  }
+
+  function handleNewListNameOnChange(event) {
+    setNewListName(event.target.value)
+  }
+
   function handleDragStart(event) {
     log.debug(
       `[handleDragStart] taskId: ${event.active.id} listId; ${event.active.data.current.taskListId}`
@@ -88,7 +104,18 @@ export default function Kanban({ fileContent, setFile, saveFile }) {
 
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className={styles.kanbanContainer}>{listEl}</div>
+      <div className={styles.kanbanContainer}>
+        {listEl}
+        {isAddingList && (
+          <div className={styles.addList}>
+            <input type="text" value={newListName} onChange={handleNewListNameOnChange} />
+            <div>
+              <button onClick={handleAddList}>Add</button>
+              <button onClick={() => setIsAddingList(false)}>Cancel</button>
+            </div>
+          </div>
+        )}
+      </div>
 
       <DragOverlay dropAnimation={null}>
         {activeTaskData && <Task task={activeTaskData} listId={activeTask.listId} />}

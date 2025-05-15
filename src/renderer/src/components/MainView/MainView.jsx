@@ -13,6 +13,7 @@ export default function MainView() {
   const [filePath, setFilePath] = useState()
   const [fileName, setFileName] = useState()
   const prevFileRef = useRef()
+  const [isAddingList, setIsAddingList] = useState(false)
 
   window.electron.ipcRenderer.on(
     'MainView:openFile',
@@ -31,7 +32,6 @@ export default function MainView() {
 
   function saveFile() {
     log.debug(`[saveFile] called`)
-    // log.verbose(`[saveFile] file changed, saving ${file} with ${filePath}`)
     if (file !== prevFileRef) {
       window.electron.ipcRenderer.invoke('file:saveFile', file, filePath)
     }
@@ -46,6 +46,7 @@ export default function MainView() {
         setView={setView}
         saveFile={saveFile}
         setFile={setFile}
+        setIsAddingList={setIsAddingList}
       />
 
       {file === null && (
@@ -55,7 +56,13 @@ export default function MainView() {
       )}
 
       {file !== null && view === 'kanban' ? (
-        <Kanban fileContent={file} setFile={setFile} saveFile={saveFile} />
+        <Kanban
+          fileContent={file}
+          setFile={setFile}
+          saveFile={saveFile}
+          isAddingList={isAddingList}
+          setIsAddingList={setIsAddingList}
+        />
       ) : null}
       {file !== null && view === 'editor' ? (
         <Editor

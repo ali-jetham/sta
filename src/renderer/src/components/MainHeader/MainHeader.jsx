@@ -7,7 +7,8 @@ export default function MainHeader({
   setFileName,
   setView,
   saveFile,
-  setFile
+  setFile,
+  setIsAddingList
 }) {
   function handleViewSwitch() {
     if (view === 'kanban') {
@@ -18,7 +19,7 @@ export default function MainHeader({
   }
 
   function handleFileClose() {
-    saveFile()
+    // saveFile()
     setFile(null)
     setFileName(null)
   }
@@ -29,7 +30,7 @@ export default function MainHeader({
 
       <div className={styles.actionButtonsContainer}>
         {view === 'kanban' && (
-          <button className={styles.actionButton}>
+          <button className={styles.actionButton} onClick={() => setIsAddingList(true)}>
             <SquarePlus size={20} />
           </button>
         )}
